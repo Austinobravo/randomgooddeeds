@@ -8,22 +8,22 @@ const DesktopNav = () => {
     const navLinks = useNavigation()
   return (
     <div className='flex justify-between gap-2 items-center w-full p-4'>
-        <div className='text-xl font-bold'>
+        <div className='text-3xl font-bold'>
             <h2>R<span className='text-blue-500'>G</span>D</h2>
         </div>
 
-        <ul className='flex items-center gap-2'>
+        <ul className='flex items-center gap-4 capitalize'>
             {navLinks.map((link) => (
-                <li>
+                <li key={link.url} className={`${link.isActive && "text-blue-500 font-bold"}  text-lg transition-all duration-500 ease-in-out hover:font-semibold`}>
                     <Link href={link.url}>{link.name}</Link>
                 </li>
             ))}
         </ul>
 
-        <div>
-            <Link href={``}>Login</Link>
+        <div className='flex gap-3 items-center'>
+            <Link href={``} className='hover:underline underline-offset-4'>Login</Link>
             <Link href={``}>
-                <Button>Become an Affiliate</Button>
+                <Button className='cursor-pointer'>Become an Affiliate</Button>
             </Link>
         </div>
 
