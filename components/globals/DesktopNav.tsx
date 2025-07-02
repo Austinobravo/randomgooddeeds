@@ -8,9 +8,9 @@ const DesktopNav = () => {
     const navLinks = useNavigation()
   return (
     <div className='flex justify-between gap-2 items-center w-full p-4'>
-        <div className='text-3xl font-bold'>
+        <Link href={`/`} className='text-3xl font-bold'>
             <h2>R<span className='text-blue-500'>G</span>D</h2>
-        </div>
+        </Link>
 
         <ul className='flex items-center gap-4 capitalize'>
             {navLinks.map((link) => (
