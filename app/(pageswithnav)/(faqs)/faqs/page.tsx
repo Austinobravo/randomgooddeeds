@@ -39,7 +39,7 @@ const FaqPage = () => {
   return (
     <section className='py-8 px-5'>
       <div className='text-center relative space-y-2'>
-        <Image src={`/img.png`} width={200} height={200} className='absolute left-5 size-30' alt=''/>
+        <Image src={`/img.png`} width={200} height={200} className='absolute top-7 left-5  sm:size-30 size-15' alt=''/>
         <h2 className='lg:text-4xl text-3xl font-bold py-4'>Frequently Asked Questions</h2>
         <h3>Looking for answers about Selar?</h3>
         <h4 className='max-w-5xl mx-auto'>Our comprehensive helpdesk has all the information you need. If you still have questions, <Link href={""} className='text-blue-500 font-semibold'>helpdesk</Link> has all the information you need. If you still have questions, <Link href={`mailto:info@xynder.com`} className='text-blue-500 font-semibold hover:underline underline-offset-4'>info@xynder.com</Link></h4>
@@ -48,7 +48,7 @@ const FaqPage = () => {
         <Accordion type="single" collapsible className=''>
           {data.map((item, index) => (
           <AccordionItem key={index} value={`item-${index}`}>
-            <AccordionTrigger className='!no-underline data-[state=open]:bg-blue-500 data-[state=open]:text-white rounded-none'>{item.question}</AccordionTrigger>
+            <AccordionTrigger className='!no-underline data-[state=open]:bg-blue-500 data-[state=open]:px-2 data-[state=open]:text-white rounded-none'>{item.question}</AccordionTrigger>
             <AccordionContent>
               {item.answer}
             </AccordionContent>

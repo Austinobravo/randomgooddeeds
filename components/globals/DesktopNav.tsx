@@ -21,8 +21,8 @@ const DesktopNav = () => {
         </ul>
 
         <div className='flex gap-3 items-center'>
-            <Link href={``} className='hover:underline underline-offset-4'>Login</Link>
-            <Link href={``}>
+            <Link href={`/login`} className='hover:underline underline-offset-4'>Login</Link>
+            <Link href={`/register`}>
                 <Button className='cursor-pointer'>Become an Affiliate</Button>
             </Link>
         </div>
