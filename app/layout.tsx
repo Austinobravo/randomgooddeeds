@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Geist, Geist_Mono, Jost } from "next/font/google";
+import { Geist, Geist_Mono, Jost, Inter } from "next/font/google";
 import "./globals.css";
 // import '@richaadgigi/stylexui/css/xui.css'; // Core CSS
 
@@ -9,7 +9,11 @@ const geistSans = Geist({
   subsets: ["latin"],
 });
 const jost = Jost({
-  variable: "--font-geist-sans",
+  variable: "--font-jost",
+  subsets: ["latin"],
+});
+const inter = Inter({
+  variable: "--font-inter",
   subsets: ["latin"],
 });
 
@@ -31,7 +35,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${jost.className} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} ${jost.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
         {children}
       </body>
