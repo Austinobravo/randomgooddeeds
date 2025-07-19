@@ -11,6 +11,7 @@ import {
   SheetContent,
   SheetHeader,
   SheetTitle,
+  SheetDescription,
 } from "@/components/ui/sheet";
 import useNavigation from "@/hooks/useNavigation";
 
@@ -44,6 +45,7 @@ export default function MobileNav() {
 
           <SheetHeader>
             <SheetTitle className="sr-only">Main navigation</SheetTitle>
+            <SheetDescription></SheetDescription>
           </SheetHeader>
 
 
@@ -65,13 +67,13 @@ export default function MobileNav() {
 
 
           <div className="mt-auto flex flex-col gap-4 px-4">
-            <Link href="" onClick={() => setOpen(false)}>
+            <Link href="/login" onClick={() => setOpen(false)}>
               <Button variant="outline" className="w-full rounded-full !shadow-none">
                Login
               </Button>
             </Link>
 
-            <Link href="" onClick={() => setOpen(false)}>
+            <Link href="/register" onClick={() => setOpen(false)}>
               <Button className="w-full">
                 Become an Affiliate
               </Button>

@@ -5,6 +5,7 @@ import { validateForEmptySpaces } from "./utils";
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const AcceptedFileTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
 const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{6,}$/
 
 export const LoginFormSchema = z.object({
    username_or_email: z
@@ -14,6 +15,44 @@ export const LoginFormSchema = z.object({
       .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
    password: z
       .string()
+      .min(1, { message: "This field is mandatory" })
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+});
+
+export const RegisterFormSchema = z.object({
+   firstName: z
+      .string()
+      .min(1, { message: "This field is mandatory" })
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   lastName: z
+      .string()
+      .min(1, { message: "This field is mandatory" })
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   email: z
+      .email()
+      .min(1, { message: "This field is mandatory" })
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   password: z
+      .string()
+      .min(6, { message: "This field must have at least six characters" })
+      .regex(passwordRegex,{ message: "Password must include uppercase, lowercase, number, and special character"})
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   confirmPassword: z
+      .string()
+      .min(6, { message: "This field must have at least six characters" })
+      .regex(passwordRegex,{ message: "Password must include uppercase, lowercase, number, and special character"})
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+}).refine((data) => data.password !== data.confirmPassword, {message: "Password don't match.", path: ["confirmPassword"]});
+
+export const ForgotPasswordFormSchema = z.object({
+   email: z
+      .email()
       .min(1, { message: "This field is mandatory" })
       .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
       .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
