@@ -24,7 +24,7 @@ export const useDashboardNavigation = () => {
         
             {
               title: "Overview",
-              url: "/overview",
+              url: "/dashboard",
               icon: AlignLeft,
               isActive: pathname.startsWith("/overview")
             },
@@ -63,7 +63,7 @@ export const useDashboardNavigation = () => {
             },
             {
               title: "Settings",
-              url: "/settings/security",
+              url: "/settings",
               icon: MessageSquareMore,
               isActive: pathname.startsWith("/settings")
             },
