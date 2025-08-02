@@ -29,7 +29,11 @@ const formSchema = z.object({
 
 })
 
-export function BankDetailsForm() {
+type BankDetailsFormProps = {
+    onSuccess: (data: z.infer<typeof formSchema>) => void
+}
+
+export function BankDetailsForm({onSuccess}:BankDetailsFormProps) {
     // 1. Define your form.
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -44,6 +48,7 @@ export function BankDetailsForm() {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
+    onSuccess(values)
     console.log(values)
   }
 
@@ -51,7 +56,6 @@ export function BankDetailsForm() {
     <div>
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
-        <div className="flex gap-2 not-sm:flex-wrap w-full">
         <FormField
           control={form.control}
           name="bankName"
@@ -84,7 +88,7 @@ export function BankDetailsForm() {
                 </FormItem>
             )}
             />
-        </div>
+
             <FormField
             control={form.control}
             name="accountName"
