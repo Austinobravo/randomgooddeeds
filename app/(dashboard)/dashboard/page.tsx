@@ -15,6 +15,7 @@ import Link from 'next/link';
 import { Separator } from '@/components/ui/separator';
 import TransactionTable from '../_components/TransactionTable';
 import data from "../_components/data.json"
+import WithdrawDialog from '../_components/WithdrawDialog';
 const recentActivities = [
     {
         title: "You have a new notification",
@@ -45,29 +46,7 @@ const DashboardPage = () => {
                         <div className='flex flex-col justify-center-safe items-center gap-2'>
                             <h3 className='font-bold text-3xl'>{formatToNaira(5000.00)}</h3>
                             <p className='text-gray-200 text-sm'>Available</p>
-                            <Dialog >
-                                <DialogTrigger asChild>
-                                
-                                    <Button variant={"secondary"} className='w-full rounded-lg min-h-14 cursor-pointer'>Withdraw</Button>
-                                </DialogTrigger>
-                                <DialogContent className='overflow-auto sm:max-w-md max-h-full no-scrollbar'>
-                                    <DialogHeader>
-                                    <DialogTitle></DialogTitle>
-                                    <DialogDescription>
-                                        
-                                    </DialogDescription>
-                                    </DialogHeader>
-                                    <div className='space-y-10'>
-                                        <h3 className='font-bold text-xl'>Withdraw</h3>
-                                        <div className='flex gap-5 items-center justify-between'>
-                                            {/* <LogoutModal />
-                                            <DialogClose className='w-1/2 cursor-pointer'>
-                                                Cancel
-                                            </DialogClose> */}
-                                        </div>
-                                    </div>
-                                </DialogContent>
-                                </Dialog>
+                            <WithdrawDialog />
                         </div>
                     </CardContent>
                     <CardFooter>

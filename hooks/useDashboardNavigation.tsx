@@ -40,6 +40,12 @@ export const useDashboardNavigation = () => {
               icon: WalletMinimal,
               isActive: pathname.startsWith("/transactions")
             },
+            {
+              title: "Notifications",
+              url: "/notifications",
+              icon: MessageSquareDot,
+              isActive: pathname.startsWith("/notifications")
+            },
             // {
             //   title: "Message",
             //   url: "/message",
