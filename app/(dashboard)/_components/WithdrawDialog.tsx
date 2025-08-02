@@ -4,12 +4,16 @@ import React, { useState } from 'react';
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Button } from '@/components/ui/button';
 import { Gem, Landmark } from 'lucide-react';
+import { BankDetailsForm } from './BankDetailsForm';
+import { AmountForm } from './AmountForm';
+import { OtpForm } from './OtpForm';
 
 const WithdrawDialog = () => {
   const [isDialog1Open, setDialog1Open] = useState(false);
   const [isDialog2Open, setDialog2Open] = useState(false);
   const [isDialog3Open, setDialog3Open] = useState(false);
   const [isDialog4Open, setDialog4Open] = useState(false);
+  const [isDialog5Open, setDialog5Open] = useState(false);
 
   return (
     <>
@@ -39,7 +43,7 @@ const WithdrawDialog = () => {
           </div>
            
             <DialogClose asChild>
-              <Button variant="secondary" className='w-full min-h-14 '>Cancel</Button>
+              <Button variant="secondary" className='w-full min-h-14 cursor-pointer '>Cancel</Button>
             </DialogClose>
           </div>
         </DialogContent>
@@ -53,9 +57,9 @@ const WithdrawDialog = () => {
             <DialogDescription>Enter your bank details</DialogDescription>
           </DialogHeader>
           <div className="space-y-4">
-            <Button onClick={() => setDialog4Open(true)}>Add New Bank</Button>
+            <BankDetailsForm />
             <DialogClose asChild>
-              <Button variant="ghost">Close</Button>
+              <Button variant="secondary" className='w-full min-h-14 cursor-pointer '>Close</Button>
             </DialogClose>
           </div>
         </DialogContent>
@@ -74,16 +78,55 @@ const WithdrawDialog = () => {
         </DialogContent>
       </Dialog>
 
-      {/* Dialog 4 - Add New Bank */}
+      {/* Dialog 4 - Add Amount */}
       <Dialog open={isDialog4Open} onOpenChange={setDialog4Open}>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add Bank</DialogTitle>
-            <DialogDescription>Enter bank name and account number</DialogDescription>
+            <DialogTitle>Withdraw Money</DialogTitle>
+            <DialogDescription>Enter the amount you will want to withdraw</DialogDescription>
           </DialogHeader>
+          <div>
+            <div className='space-y-4'>
+                <h3 className='text-gray-500 text-sm'>To</h3>
+                <div className='flex gap-2 items-center border-2 border-solid border-blue-500 rounded-lg bg-blue-50 p-4'>
+                    <Landmark className='size-7 text-blue-500'/>
+                    <div>
+                        <h3 className='font-semibold'>Austine Doe</h3>
+                        <h4 className='text-gray-500 text-sm'>23333XXXXX</h4>
+                    </div>
+                </div>
+                <AmountForm />
+            </div>
+          </div>
           <DialogClose asChild>
-            <Button variant="ghost">Close</Button>
-          </DialogClose>
+              <Button variant="secondary" className='w-full min-h-14 cursor-pointer '>Close</Button>
+            </DialogClose>
+        </DialogContent>
+      </Dialog>
+
+      {/* Dialog 5 - Verification Code */}
+      <Dialog open={true} onOpenChange={setDialog5Open}>
+        <DialogContent className='overflow-y-auto'>
+          <DialogHeader>
+            <DialogTitle>Withdraw Money</DialogTitle>
+            <DialogDescription>Enter the amount you will want to withdraw</DialogDescription>
+          </DialogHeader>
+          <div>
+            <div className='space-y-4'>
+                <h3 className='text-gray-500 text-sm'>To</h3>
+                <div className='flex gap-2 items-center border-2 border-solid border-blue-500 rounded-lg bg-blue-50 p-4'>
+                    <Landmark className='size-7 text-blue-500'/>
+                    <div>
+                        <h3 className='font-semibold'>Austine Doe</h3>
+                        <h4 className='text-gray-500 text-sm'>23333XXXXX</h4>
+                    </div>
+                </div>
+                <OtpForm />
+            </div>
+          </div>
+          <DialogClose asChild>
+              <Button variant="secondary" className='w-full min-h-14 cursor-pointer '>Close</Button>
+            </DialogClose>
         </DialogContent>
       </Dialog>
     </>
