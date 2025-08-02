@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jost, Inter } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "sonner";
 // import '@richaadgigi/stylexui/css/xui.css'; // Core CSS
 
 
@@ -37,6 +38,18 @@ export default function RootLayout({
       <body
         className={`${inter.className} ${jost.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
       >
+         <Toaster
+            richColors
+            toastOptions={{
+              classNames: {
+                success: 'bg-green-50 text-green-800 border border-green-300',
+                error: 'bg-red-50 text-red-800 border border-red-300',
+                info: 'bg-blue-50 text-blue-800 border border-blue-300',
+                warning: 'bg-yellow-50 text-yellow-800 border border-yellow-300',
+                default: 'bg-gray-50 text-gray-800 border border-gray-300',
+              },
+            }}
+          />
         {children}
       </body>
     </html>
