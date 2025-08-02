@@ -71,7 +71,7 @@ export function NavMain({
         {items.second.map((item) => (
             <SidebarMenuItem key={item.title}>
                <Link href={item.url}>
-                <SidebarMenuButton tooltip={item.title} className={`${item.isActive && "rounded-full bg-aparte-yellow flex justify-center items-center hover:bg-aparte-yellow/80"} !cursor-pointer`}>
+                <SidebarMenuButton tooltip={item.title} className={`${item.isActive && "rounded-full bg-amber-500 flex justify-center items-center hover:bg-amber-500/80"} !cursor-pointer`}>
                   {item.icon && <item.icon size={20}/>}
                   <span>{item.title}</span>
                   {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}
@@ -112,7 +112,7 @@ export function NavMain({
                                 </Dialog>
                                   : 
                                 <Link href={item.url}>
-                                  <SidebarMenuButton tooltip={item.title} className={`${item.isActive && "rounded-full bg-aparte-yellow flex justify-center items-center hover:bg-aparte-yellow/80"} !cursor-pointer`}>
+                                  <SidebarMenuButton tooltip={item.title} className={`${item.isActive && "rounded-full bg-amber-500 flex justify-center items-center hover:bg-amber-500/80"} !cursor-pointer`}>
                                     {item.icon && <item.icon />}
                                     <span>{item.title}</span>
                                     {/* <ChevronRight className="ml-auto transition-transform duration-200 group-data-[state=open]/collapsible:rotate-90" /> */}

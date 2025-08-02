@@ -18,7 +18,7 @@ import { NavMain } from "./nav-main"
 export function DashboardSidebar({ ...props }: React.ComponentProps<typeof Sidebar>) {
   const data = useDashboardNavigation()
   return (
-    <Sidebar collapsible="icon" {...props}  customClassName="!bg-blue-900 text-white">
+    <Sidebar collapsible="icon" {...props}  customClassName="!bg-blue-900 !text-white">
       <SidebarHeader>
         {/* <TeamSwitcher teams={data.teams} /> */}
         {/* <Logo /> */}

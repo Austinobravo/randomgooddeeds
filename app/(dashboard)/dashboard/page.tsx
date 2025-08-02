@@ -33,7 +33,7 @@ const DashboardPage = () => {
   return (
     <section>
         <h2 className='text-2xl font-bold py-4'>Wallet</h2>
-        <div className='flex gap-7'>
+        <div className='flex gap-7 not-sm:flex-wrap'>
             <div className='lg:w-2/5 space-y-7'>
                 <Card className='bg-blue-500 text-white'>
                     <CardHeader>

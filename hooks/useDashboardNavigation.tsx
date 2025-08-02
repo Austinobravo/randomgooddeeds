@@ -26,7 +26,7 @@ export const useDashboardNavigation = () => {
               title: "Overview",
               url: "/dashboard",
               icon: AlignLeft,
-              isActive: pathname.startsWith("/overview")
+              isActive: pathname.startsWith("/dashboard")
             },
             // {
             //   title: "Listing",
@@ -35,10 +35,10 @@ export const useDashboardNavigation = () => {
             //   isActive: pathname.startsWith("/listing")
             // },
             {
-              title: "Earning",
-              url: "/earning",
+              title: "Transactions",
+              url: "/transactions",
               icon: WalletMinimal,
-              isActive: pathname.startsWith("/earning")
+              isActive: pathname.startsWith("/transactions")
             },
             // {
             //   title: "Message",
@@ -55,16 +55,16 @@ export const useDashboardNavigation = () => {
             
           ],
           third: [
-            {
-              title: "Support",
-              url: "/support",
-              icon: Settings,
-              isActive: pathname.startsWith("/support")
-            },
+            // {
+            //   title: "Support",
+            //   url: "/support",
+            //   icon: MessageSquareMore,
+            //   isActive: pathname.startsWith("/support")
+            // },
             {
               title: "Settings",
               url: "/settings",
-              icon: MessageSquareMore,
+              icon: Settings,
               isActive: pathname.startsWith("/settings")
             },
             {

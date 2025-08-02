@@ -39,11 +39,14 @@ const DashboardLayout = ({children}: Props) => {
 
             </div>
             <div className='flex items-center gap-5'>
-                <div className=''>
-                    {"https://randomdeeds.com/austinobravo".slice(0,30)}...
-                </div>
-                <div className='cursor-pointer'>
-                    <CopyComponent data={" https://randomdeeds.com/austinobravo"}/>
+                <div className="sm:flex hidden gap-2 items-center ">
+                    <div className='bg-gray-100 rounded-sm p-2 '>
+                        {"https://randomdeeds.com/austinobravo".slice(0,30)}...
+                    </div>
+                    <div className='cursor-pointer'>
+                        <CopyComponent data={" https://randomdeeds.com/austinobravo"}/>
+                    </div>
+
                 </div>
                         <Button className={`text-black hover:text-white hidden rounded-full lg:flex items-center bg-transparent border border-solid border-gray-500 cursor-pointer `}><Share2 /> Share</Button>
                         <MessageCircle />
@@ -56,7 +59,16 @@ const DashboardLayout = ({children}: Props) => {
                   </div>
           </div>
         </header>
-        <div className="bg-gray-50 p-10">
+        <div className="bg-gray-50 p-10 h-full">
+            <div className="sm:hidden flex gap-5 items-center pb-4">
+                    <div className='bg-gray-100 rounded-lg p-2 '>
+                        {"https://randomdeeds.com/austinobravo".slice(0,30)}...
+                    </div>
+                    <div className='cursor-pointer'>
+                        <CopyComponent data={" https://randomdeeds.com/austinobravo"}/>
+                    </div>
+
+                </div>
             {children}
         </div>
       </SidebarInset>

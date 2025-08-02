@@ -29,6 +29,7 @@ import {
   GripVerticalIcon,
   ListFilterIcon,
   LoaderIcon,
+  MessageSquareHeartIcon,
   MoreHorizontalIcon,
   MoreVerticalIcon,
   PlusIcon,
@@ -90,6 +91,7 @@ import { cn, formatToNaira } from "@/lib/utils"
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
 // import { useIsMobile } from "@/hooks/useIsMobile"
+import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 
 export const schema = z.object({
   id: z.number(),
@@ -322,6 +324,7 @@ export default function TransactionTable({
       <div
         className="relative flex flex-col gap-4 overflow-auto"
       >
+        {/* <h3 className="font-bold">Recent Transactions</h3> */}
         {/* <div className="overflow-hidden rounded-lg">
         </div> */}
             <Table className="border-separate border-spacing-y-4 table-auto no-scrollbar">
@@ -360,9 +363,57 @@ export default function TransactionTable({
                                             key={cell.id}
                                             className="px-4 py-3 align-middle font-lato first:rounded-l-2xl last:rounded-r-2xl"
                                           >
-                                            <Link href={`/users/${row.id}`} className="block w-full h-full">
-                                              {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                            </Link>
+                                             <Dialog >
+                                                <DialogTrigger asChild>
+                                                        <span className="block w-full h-full">
+                                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                                        </span>
+                                                </DialogTrigger>
+                                                <DialogContent className='overflow-auto sm:max-w-lg max-h-full no-scrollbar'>
+                                                    <DialogHeader>
+                                                    <DialogTitle>Transactions Details</DialogTitle>
+                                                    <DialogDescription>
+                                                        
+                                                    </DialogDescription>
+                                                    </DialogHeader>
+                                                    <div className='space-y-10'>
+                                                       <div className="flex border-y border-solid justify-between py-4">
+                                                            <div>
+                                                                <h3 className="font-semibold">20 June 2020 20:39 UTC + 1</h3>
+                                                                <h4 className="text-gray-500 text-sm">Trans ID: 0Xddjdkhd83hhednd</h4>
+                                                            </div>
+                                                            <div>
+                                                                <h3 className="font-semibold">{formatToNaira(3000)}</h3>
+                                                                <h4 className="text-sm text-amber-500">Pending</h4>
+                                                            </div>
+                                                       </div>
+                                                       <div>
+                                                        <h4 className="font-bold">Account Details</h4>
+                                                       <div className="flex justify-between">
+                                                            <div className="space-y-3">
+                                                                <h3 className="text-gray-500 text-sm">Bank Name</h3>
+                                                                <h4 className="text-gray-500 text-sm">Account Name</h4>
+                                                                <h4 className="text-gray-500 text-sm">Account Number</h4>
+                                                            </div>
+                                                            <div className="space-y-3">
+                                                                <h3 className="font-semibold">Access Bank</h3>
+                                                                <h4 className="font-semibold">Austine Chukwuebuka Doe</h4>
+                                                                <h4 className="font-semibold">0030493</h4>
+                                                            </div>
+                                                       </div>
+                                                       <div className="flex justify-between items-center bg-violet-50 rounded-lg p-4">
+                                                        <div>
+                                                            <h3 className="font-bold ">Need Help?</h3>
+                                                            <p className="text-gray-700 text-xs">If there is a problem with the transaction, make sure to contact support.</p>
+                                                        </div>
+                                                        <Button className="bg-violet-500 cursor-pointer text-white"><MessageSquareHeartIcon /> Support</Button>
+                                                       </div>
+
+                                                       </div>
+                                                       <Button className="bg-blue-500 cursor-pointer text-white min-h-14 w-full">Print</Button>
+                                                    </div>
+                                                </DialogContent>
+                                                </Dialog>
                                           </TableCell>
                                         ))}
                                       </TableRow>
