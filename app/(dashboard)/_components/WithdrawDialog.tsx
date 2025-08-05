@@ -30,7 +30,8 @@ const WithdrawDialog = () => {
   return (
     <>
       {/* Step 1 - Method Selection */}
-      <Dialog open={step === 1} onOpenChange={(open) => !open && setStep(0)}>
+      {/* <Dialog open={step === 1} onOpenChange={(open) => !open && setStep(0)}> */}
+      <Dialog >
         <DialogTrigger asChild>
           <Button variant="secondary" className="w-full rounded-lg min-h-14 cursor-pointer">Withdraw</Button>
         </DialogTrigger>
