@@ -1,0 +1,121 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+  output   = "../lib/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id             String     @id @default(uuid())
+  firstName      String
+  lastName       String
+  username       String
+  email          String     @unique
+  passwordHash   String
+  referralCode   String     @unique
+  referredBy     String?    // stores the referralCode of another user
+  isVerified     Boolean    @default(false)
+  isAdmin        Boolean    @default(false)
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+
+  // Relations
+  referralsMade  Referral[] @relation("ReferralsMade")
+  referralsReceived Referral[] @relation("ReferralsReceived")
+  earnings       Earning[]
+  withdrawals    Withdrawal[]
+  adminLogs      AdminLog[] @relation("AdminLogs")
+
+  // Referring user relation (optional)
+  referrer       User?      @relation("UserReferrer", fields: [referredBy], references: [referralCode])
+  referredUsers  User[]     @relation("UserReferrer")
+}
+
+model Referral {
+  id            String   @id @default(uuid())
+  referrerId    String
+  refereeId     String
+  clickIp       String?
+  clickedAt     DateTime?
+  registeredAt  DateTime?
+
+  referrer      User     @relation("ReferralsMade", fields: [referrerId], references: [id])
+  referee       User     @relation("ReferralsReceived", fields: [refereeId], references: [id])
+}
+
+model Earning {
+  id          String   @id @default(uuid())
+  userId      String
+  sourceUser  String
+  amount      Decimal  @db.Decimal(10, 2)
+  type        EarningType
+  status      EarningStatus @default(pending)
+  createdAt   DateTime @default(now())
+
+  user        User     @relation(fields: [userId], references: [id])
+}
+
+model Withdrawal {
+  id           String   @id @default(uuid())
+  userId       String
+  amount       Decimal  @db.Decimal(10, 2)
+  method       String
+  accountInfo  Json
+  status       WithdrawalStatus @default(pending)
+  requestedAt  DateTime @default(now())
+  processedAt  DateTime?
+
+  user         User     @relation(fields: [userId], references: [id])
+}
+
+model CommissionSetting {
+  id         String   @id @default(uuid())
+  type       CommissionType
+  amount     Decimal  @db.Decimal(10, 2)
+  isPercent  Boolean
+  active     Boolean  @default(true)
+  createdAt  DateTime @default(now())
+}
+
+model AdminLog {
+  id         String   @id @default(uuid())
+  adminId    String
+  action     String
+  metadata   Json?
+  createdAt  DateTime @default(now())
+
+  admin      User     @relation("AdminLogs", fields: [adminId], references: [id])
+}
+
+// Enums
+enum EarningType {
+  signup
+  purchase
+  bonus
+}
+
+enum EarningStatus {
+  pending
+  confirmed
+  revoked
+}
+
+enum WithdrawalStatus {
+  pending
+  approved
+  rejected
+}
+
+enum CommissionType {
+  signup
+  purchase
+}

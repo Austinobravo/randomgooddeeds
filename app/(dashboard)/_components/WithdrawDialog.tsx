@@ -24,7 +24,7 @@ const WithdrawDialog = () => {
   const [step, setStep] = useState(1);
 
   const [bankDetails, setBankDetails] = useState<bankProps | null>(null);
-  const [amount, setAmount] = useState<amountProps | null>(null);
+  const [amount, setAmount] = useState<string | null>(null);
   const [otp, setOtp] = useState<otpProps | null >(null);
 
   return (
@@ -121,6 +121,16 @@ const WithdrawDialog = () => {
             <DialogDescription>Enter OTP</DialogDescription>
           </DialogHeader>
           <div className='space-y-4'>
+             <div className="flex justify-between items-center">
+                    <div>
+                        <h4 className="font-bold text-lg">Amount</h4>
+                        <h5 className="text-gray-500 text-sm">The amount will be transferred to an account.</h5>
+                    </div>
+                    <h4 className="font-bold text-lg">
+                        {formatToNaira(amount)}
+                    </h4>
+    
+                </div>
             <OtpForm
               onSuccess={(value) => {
                 setOtp(value);

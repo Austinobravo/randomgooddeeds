@@ -26,7 +26,7 @@ const formSchema = z.object({
 })
 
 type amountFormProps = {
-    onSuccess: (data:z.infer<typeof formSchema>) => void
+    onSuccess: (data:string) => void
 }
 
 export function AmountForm({onSuccess}: amountFormProps) {
@@ -42,7 +42,7 @@ export function AmountForm({onSuccess}: amountFormProps) {
   function onSubmit(values: z.infer<typeof formSchema>) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
-    onSuccess(values)
+    onSuccess(values.amount)
     console.log(values)
   }
 

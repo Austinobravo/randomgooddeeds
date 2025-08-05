@@ -57,16 +57,7 @@ export function OtpForm({onSuccess}: otpFormProps) {
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8 ">
         <div className=" space-y-5">
-            <div className="flex justify-between items-center">
-                <div>
-                    <h4 className="font-bold text-lg">Amount</h4>
-                    <h5 className="text-gray-500 text-sm">The amount will be transferred to an account.</h5>
-                </div>
-                <h4 className="font-bold text-lg">
-                    {formatToNaira(5000)}
-                </h4>
-
-            </div>
+           
             <div className="bg-blue-50 p-4">
                 <div className="space-y-2">
                     <h3 className="font-bold text-lg">Enter Verification Code</h3>

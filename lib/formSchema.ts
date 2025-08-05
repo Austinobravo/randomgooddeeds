@@ -4,7 +4,8 @@ import { validateForEmptySpaces } from "./utils";
 
 const MAX_FILE_SIZE = 5 * 1024 * 1024; // 5MB
 const AcceptedFileTypes = ["image/jpeg", "image/jpg", "image/png", "image/gif"];
-const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+export const emojiRegex = /(\p{Emoji_Presentation}|\p{Extended_Pictographic})/gu;
+export const emailRegex = /^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|.(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/
 const passwordRegex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{6,}$/
 
 export const LoginFormSchema = z.object({
