@@ -32,6 +32,16 @@ export const RegisterFormSchema = z.object({
       .min(1, { message: "This field is mandatory" })
       .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
       .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   username: z
+      .string()
+      .min(1, { message: "This field is mandatory" })
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
+   referralCode: z
+      .string()
+      .optional()
+      .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
+      .refine((value) => !value || !value.match(emojiRegex), { message: "No emoji's alllowed." }),
    email: z
       .email()
       .min(1, { message: "This field is mandatory" })

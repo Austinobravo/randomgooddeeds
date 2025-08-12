@@ -1,7 +1,16 @@
 import { clsx, type ClassValue } from "clsx"
 import { twMerge } from "tailwind-merge"
 import bcrypt from 'bcryptjs'
+import jwt from "jsonwebtoken"
 
+
+
+
+
+export const createVerificationToken = (email: string) => {
+    const secret = process.env.JWT_SECRET!
+    return jwt.sign({ email }, secret, { expiresIn: "1h" })
+  }
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
@@ -41,3 +50,8 @@ export function formatToNaira(amount: unknown): string {
     maximumFractionDigits: 2,
   }).format(numericAmount);
 }
+
+export const BASE_URL =
+  process.env.NODE_ENV === "development"
+    ? "http://localhost:3000"
+    : process.env.API_URL;

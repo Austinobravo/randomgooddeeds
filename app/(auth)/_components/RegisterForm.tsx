@@ -36,6 +36,7 @@ const RegisterForm = () => {
           firstName: "",
           lastName: "",
           email: "",
+          username: "",
           confirmPassword: "",
           password: ""
         },
@@ -45,30 +46,11 @@ const RegisterForm = () => {
       async function onSubmit(values: z.infer<typeof RegisterFormSchema>) {
         // const email = values.email
         // router.push(`/verify-email?email=${encodeURIComponent(email)}`)
-        const payload= {
-                "username": values.email,
-                "password": values.password
-
-        }
           try{
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, payload)
+            const result = await axios.post(`api/auth/register`, values)
             console.log("result", result)
-            await axios.post('/api/auth/set-cookie', {
-                accessToken: result.data.data.tokens.accessToken,
-                refreshToken: result.data.data.tokens.refreshToken
-            });
-            
-            const profileRes = await fetch("/api/profile");
-            if (profileRes.ok) {
-                const user = await profileRes.json();
-                console.log("user", user)
-                // useAuthStore.getState().setUser(user.data.profile); 
-            }
-            toast.success("Success", {
-            description: "Login Successful.",
-            });
 
-            router.push(`/account`)
+            router.push(`/dashboard`)
 
         }catch (error: any) {
             const errorMessage = error.response.data.message || error.response.data.error || "";
@@ -133,21 +115,39 @@ const RegisterForm = () => {
                 )}
                     />
         </div>
-    <FormField
-        control={form.control}
-        name={`email`}
-        render={({ field }) => (
-        <FormItem className="">
-            <FormLabel className="!text-black text-xs">Email Address</FormLabel>
-            <FormControl>
-                <Input type="email"  placeholder='Johnparkings@mail.com' {...field} className='!bg-transparent border rounded-lg border-solid h-14 focus-visible:!ring-offset-0 focus-visible:!ring-0 shadow-none' />
-            </FormControl>
-            {/* <FormDescription>Start your number with a country code, eg: +234</FormDescription> */}
-            
-            <FormMessage />
-        </FormItem>
-        )}
-            />
+        <div>
+        <FormField
+            control={form.control}
+            name={`username`}
+            render={({ field }) => (
+            <FormItem className="">
+                <FormLabel className="!text-black text-xs">Username</FormLabel>
+                <FormControl>
+                    <Input  placeholder='Johnparkings' {...field} className='!bg-transparent border rounded-lg border-solid h-14 focus-visible:!ring-offset-0 focus-visible:!ring-0 shadow-none' />
+                </FormControl>
+                {/* <FormDescription>Start your number with a country code, eg: +234</FormDescription> */}
+                
+                <FormMessage />
+            </FormItem>
+            )}
+                />
+        <FormField
+            control={form.control}
+            name={`email`}
+            render={({ field }) => (
+            <FormItem className="">
+                <FormLabel className="!text-black text-xs">Email Address</FormLabel>
+                <FormControl>
+                    <Input type="email"  placeholder='Johnparkings@mail.com' {...field} className='!bg-transparent border rounded-lg border-solid h-14 focus-visible:!ring-offset-0 focus-visible:!ring-0 shadow-none' />
+                </FormControl>
+                {/* <FormDescription>Start your number with a country code, eg: +234</FormDescription> */}
+                
+                <FormMessage />
+            </FormItem>
+            )}
+                />
+
+        </div>
     <FormField
         control={form.control}
         name={`password`}

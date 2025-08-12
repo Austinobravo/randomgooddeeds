@@ -21,6 +21,7 @@ model User {
   username       String
   email          String     @unique
   passwordHash   String
+  verificationLink String?
   referralCode   String     @unique
   referredBy     String?    // stores the referralCode of another user
   isVerified     Boolean    @default(false)

@@ -14,6 +14,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form"
+import { signIn, useSession } from 'next-auth/react'
 
 import { Input } from "@/components/ui/input"
 import { useRouter } from "next/navigation"
@@ -39,57 +40,42 @@ const LoginForm = () => {
      
       // 2. Define a submit handler.
       async function onSubmit(values: z.infer<typeof LoginFormSchema>) {
-        // const email = values.email
-        // router.push(`/verify-email?email=${encodeURIComponent(email)}`)
-        const payload= {
-                "username": values.username_or_email,
-                "password": values.password
-
+         try{
+      const data = await signIn("credentials", 
+        {
+          email: values.username_or_email.trim(),
+          password: values.password.trim(),
+          redirect: false
         }
-          try{
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, payload)
-            console.log("result", result)
-            await axios.post('/api/auth/set-cookie', {
-                accessToken: result.data.data.tokens.accessToken,
-                refreshToken: result.data.data.tokens.refreshToken
-            });
-            
-            const profileRes = await fetch("/api/profile");
-            if (profileRes.ok) {
-                const user = await profileRes.json();
-                console.log("user", user)
-                // useAuthStore.getState().setUser(user.data.profile); 
-            }
-            toast.success("Success", {
-            description: "Login Successful.",
-            });
+      )
 
-            router.push(`/account`)
+      if (data?.error) return  toast.error("Error", {
+        description: data.error,
+    })
 
-        }catch (error: any) {
-            const errorMessage = error.response.data.message || error.response.data.error || "";
+    if(data?.url){
+        toast.success("Success", {
+          description: "Login successful.",
+      })
 
-            if (errorMessage === "Network error") {
-            toast.error("Network Error", {
-                description: "Please check your connection and try again.",
-            });
-        
-            } else if (errorMessage === "DATABASE_UNREACHABLE") {
-            toast.error("Server Error", {
-                description: "We couldn't reach the database. Please try again later.",
-            });
-        
-            }else if (errorMessage ) {
-            toast.error("Error", {
-                description: `${errorMessage}`,
-            });
-        
-            } else {
-            toast.error("Unexpected Error", {
-                description: typeof error === "string" ? error : "An unexpected error occurred.",
-            });
-            }
-        }
+    //   if (values.remember) {
+    //     localStorage.setItem(STORAGE_KEY, values.email.trim());
+    //   } else {
+    //     localStorage.removeItem(STORAGE_KEY);
+    //   }
+
+      return router.push("/dashboard")
+
+    } 
+
+
+
+    }catch(error: any){
+      toast.error("Error", {
+        description: error,
+    })
+
+    }
       }
     
       const isSubmitting = form.formState.isSubmitting
