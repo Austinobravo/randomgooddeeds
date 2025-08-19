@@ -69,4 +69,20 @@ export const ForgotPasswordFormSchema = z.object({
       .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
 });
 
-
+ export const ResetForgotPasswordSchema = z.object({
+    newPassword: z.string().min(1, {message: "This field is mandatory"}).regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{6,}$/,
+    {
+      message:
+        "Password must include uppercase, lowercase, number, and special character",
+    }
+  ).refine((value) => !value || validateForEmptySpaces(value), {message: "No empty spaces"}).refine((value) => !value.match(emojiRegex), {message: "No emoji's alllowed."}),
+    confirmNewPassword: z.string().min(1, {message: "This field is mandatory"}).regex(
+    /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&._\-])[A-Za-z\d@$!%*?&._\-]{6,}$/,
+    {
+      message:
+        "Password must include uppercase, lowercase, number, and special character",
+    }
+  ).refine((value) => !value || validateForEmptySpaces(value), {message: "No empty spaces"}).refine((value) => !value.match(emojiRegex), {message: "No emoji's alllowed."}),
+  }).refine((data) => !data.newPassword || data.newPassword === data.confirmNewPassword, {message: "Passwords don't match", path: ["confirmNewPassword"]})
+  

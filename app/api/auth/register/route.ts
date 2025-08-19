@@ -1,3 +1,4 @@
+import { sendEmail } from "@/emails/mailer";
 import { RegisterFormSchema } from "@/lib/formSchema";
 import { BASE_URL, createVerificationToken } from "@/lib/utils";
 import prisma from "@/prisma/prisma";
@@ -81,12 +82,12 @@ export async function POST(req:Request) {
       data: { verificationLink: VERIFICATION_LINK }
     });
 
-    // await sendEmail({
-    //   to: email,
-    //   subject: "You're In! Welcome to Random Good deeds 🎉",
-    //   template: "signup-verification",
-    //   data: { VERIFICATION_LINK }
-    // });
+    await sendEmail({
+      to: email,
+      subject: "You're In! Welcome to Random Good deeds 🎉",
+      template: "signup-verification",
+      data: { VERIFICATION_LINK }
+    });
 
     return NextResponse.json({data: user, message: "User created successfully, Please verify your email."}, { status: 201 });
   } catch (error) {

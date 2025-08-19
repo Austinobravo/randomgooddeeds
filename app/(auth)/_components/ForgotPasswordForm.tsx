@@ -38,56 +38,36 @@ const ForgotPasswordForm = () => {
      
       // 2. Define a submit handler.
       async function onSubmit(values: z.infer<typeof ForgotPasswordFormSchema>) {
-        // const email = values.email
-        // router.push(`/verify-email?email=${encodeURIComponent(email)}`)
-        const payload= {
-                "username": values.email,
-
-        }
-          try{
-            const result = await axios.post(`${process.env.NEXT_PUBLIC_BASE_URL}/auth/login`, payload)
-            console.log("result", result)
-            await axios.post('/api/auth/set-cookie', {
-                accessToken: result.data.data.tokens.accessToken,
-                refreshToken: result.data.data.tokens.refreshToken
-            });
+         try{
+            const response = await axios.post('/api/auth/forgot-password', values)
+            toast.success("Success", {description: response.data.message})
+            form.reset()
+            }catch(error: any){
+            console.log("error", error)
+            const errorMessage = error.response.data.message || "";
             
-            const profileRes = await fetch("/api/profile");
-            if (profileRes.ok) {
-                const user = await profileRes.json();
-                console.log("user", user)
-                // useAuthStore.getState().setUser(user.data.profile); 
-            }
-            toast.success("Success", {
-            description: "Login Successful.",
-            });
+                if (errorMessage === "Network error") {
+                toast.error("Network Error", {
+                    description: "Please check your connection and try again.",
+                });
+            
+                } else if (errorMessage === "DATABASE_UNREACHABLE") {
+                toast.error("Server Error", {
+                    description: "We couldn't reach the database. Please try again later.",
+                });
+            
+                } else if (errorMessage ) {
+                    toast.error("Error", {
+                        description: `${errorMessage}`,
+                    });
+                
+                } else {
+                toast.error("Unexpected Error", {
+                    description: typeof error === "string" ? error : "An unexpected error occurred.",
+                });
+                }
 
-            router.push(`/account`)
-
-        }catch (error: any) {
-            const errorMessage = error.response.data.message || error.response.data.error || "";
-
-            if (errorMessage === "Network error") {
-            toast.error("Network Error", {
-                description: "Please check your connection and try again.",
-            });
-        
-            } else if (errorMessage === "DATABASE_UNREACHABLE") {
-            toast.error("Server Error", {
-                description: "We couldn't reach the database. Please try again later.",
-            });
-        
-            }else if (errorMessage ) {
-            toast.error("Error", {
-                description: `${errorMessage}`,
-            });
-        
-            } else {
-            toast.error("Unexpected Error", {
-                description: typeof error === "string" ? error : "An unexpected error occurred.",
-            });
-            }
-        }
+    }
       }
     
       const isSubmitting = form.formState.isSubmitting
