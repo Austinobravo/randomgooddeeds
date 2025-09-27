@@ -89,7 +89,7 @@ export async function POST(req:Request) {
       data: { VERIFICATION_LINK }
     });
 
-    return NextResponse.json({data: user, message: "User created successfully, Please verify your email."}, { status: 201 });
+    return NextResponse.json({message: "User created successfully, Please verify your email."}, { status: 201 });
   } catch (error) {
     console.error("Error creating user:", error);
     return NextResponse.json({message: "Internal Server Error", error: error }, { status: 500 });

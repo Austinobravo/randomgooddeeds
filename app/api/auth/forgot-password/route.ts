@@ -16,7 +16,7 @@ export async function POST(req: Request) {
   const user = await prisma.user.findUnique({ where: { email, isVerified: true } })
 
   if (!user) {
-    return NextResponse.json({ message: "If this email exists, a reset link has been sent" }, { status: 404 })
+    return NextResponse.json({ message: "If this email exists, a reset link has been sent" }, { status: 200 })
   }
 
 

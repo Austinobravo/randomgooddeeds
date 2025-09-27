@@ -31,16 +31,6 @@ export default function VerifyEmailPage() {
           setStatus('error');
           setErrorMessage(res.data.error || 'Verification failed.');
         } 
-        // if (res.redirected) {
-        //   setStatus('success');
-        //   router.push(res.url); // Redirect to /login?verified=1
-        // } else if (!res.ok) {
-        //   const data = await res.json();
-        //   setStatus('error');
-        //   setErrorMessage(data.error || 'Verification failed.');
-        // } else {
-        //   setStatus('success');
-        // }
       } catch (err:any) {
         setStatus('error');
         setErrorMessage(err?.error || 'Something went wrong. Please try again.');

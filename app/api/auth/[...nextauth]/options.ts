@@ -32,7 +32,7 @@ export const options:NextAuthOptions = {
                 throw new Error("Invalid credentials");
                 }
 
-                const isEmail = email.match(emailRegex)
+                // const isEmail = email.match(emailRegex)
 
                 const user = await prisma.user.findFirst({
                     where:{
