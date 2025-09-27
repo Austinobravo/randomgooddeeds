@@ -42,15 +42,17 @@ const WithdrawDialog = () => {
           </DialogHeader>
           <div className='space-y-4'>
             <div className="space-y-4 flex gap-4 not-sm:flex-wrap">
-              <div onClick={() => setStep(2)} className='bg-blue-100 rounded-lg flex flex-col group gap-2 p-4 h-40 hover:bg-black duration-500 transition-all hover:text-white cursor-pointer justify-center items-center shadow'>
+              <div onClick={() => setStep(2)} className='bg-blue-100 rounded-lg text-center flex flex-col group gap-2 p-4 h-60 hover:bg-blue-50 duration-500 transition-all cursor-pointer justify-center items-center shadow'>
                 <Landmark className='size-15 text-blue-500' />
                 <h3 className='font-bold '>Bank Account</h3>
-                <h4 className='text-gray-500 group-hover:text-white text-sm'>Wire money directly to your bank account</h4>
+                <h4 className='text-gray-500  text-sm'>Wire money directly to your bank account</h4>
               </div>
-              <div onClick={() => setStep(3)} className='bg-blue-100 rounded-lg flex flex-col group hover:bg-black duration-500 hover:text-white transition-all gap-2 p-4 h-40 justify-center items-center shadow'>
-                <Gem className='size-13 text-amber-500' />
-                <h3 className='font-bold '>Crypto Wallet</h3>
-                <h4 className='text-gray-500 group-hover:text-white text-sm'>Transfer your earnings to your crypto wallet</h4>
+              {/* <div onClick={() => setStep(3)} className='bg-gray-100 rounded-lg flex flex-col group  duration-500 hover:text-white transition-all gap-2 p-4 h-40 justify-center items-center shadow'> */}
+              <div className='bg-gray-100 rounded-lg flex flex-col group text-center duration-500  transition-all gap-2 p-4 h-60 justify-center items-center shadow'>
+                <Gem className='size-13 text-gray-500' />
+                <h3 className='font-bold text-gray-500'>Crypto Wallet</h3>
+                <h4 className='text-gray-500  text-sm'>Transfer your earnings to your crypto wallet</h4>
+                <h4 className='text-gray-500 text-sm'>Coming soon</h4>
               </div>
             </div>
             <DialogClose asChild>

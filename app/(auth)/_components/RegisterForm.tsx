@@ -46,7 +46,7 @@ const RegisterForm = () => {
       // 2. Define a submit handler.
       async function onSubmit(values: z.infer<typeof RegisterFormSchema>) {
           try{
-            const result = await axios.post(`api/auth/register`, values)
+            const result = await axios.post(`/api/auth/register`, values)
             // console.log("result", result)
             form.reset()
             toast.success("Success",{

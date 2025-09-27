@@ -48,13 +48,13 @@ const DashboardLayout = ({children}: Props) => {
                     </div>
 
                 </div>
-                        <Button className={`text-black hover:text-white hidden rounded-full lg:flex items-center bg-transparent border border-solid border-gray-500 cursor-pointer `}><Share2 /> Share</Button>
-                        <MessageCircle />
-                        <div className='relative'>
-                            <span className='absolute -top-3 -right-2 bg-red-500 text-white text-xs rounded-full p-[2px]'>20</span>
+                        {/* <Button className={`text-black hover:text-white hidden rounded-full lg:flex items-center bg-transparent border border-solid border-gray-500 cursor-pointer `}><Share2 /> Share</Button> */}
+                        {/* <MessageCircle /> */}
+                        <Link href={`/notifications`} className='relative'>
+                            <span className='absolute -top-3 -right-2 bg-red-500 text-white text-[12px] rounded-full p-[2px]'>20</span>
                             <Bell />
 
-                        </div>
+                        </Link>
                         {/* <ProfileDropdown user={user}/> */}
                   </div>
           </div>

@@ -4,6 +4,7 @@ import { Button } from '../ui/button'
 import axios from 'axios';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import { signOut } from 'next-auth/react';
 
 const LogoutModal = () => {
     const [isSubmitting, setIsSubmitting] = React.useState<boolean>(false);
@@ -11,12 +12,15 @@ const LogoutModal = () => {
     const Logout = async () => {
       setIsSubmitting(true)
       try{
-        const res = await axios.post('/api/auth/logout')
-        toast.success("We miss you.",{
-          description: "Come back shortly."
-        })
-        router.push("/login")
-        console.error("Logout res", res)
+        const SignOut = await signOut({redirect:false})
+        toast.success("Success", {
+                  description: "We'll miss you. Come back shortly",
+              });
+          
+        if(SignOut.url){
+            window.location.reload()
+            return router.push("/login")
+        }
       }catch(err){
         console.error("Logout error", err)
       }finally{

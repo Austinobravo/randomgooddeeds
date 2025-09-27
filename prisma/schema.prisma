@@ -35,10 +35,13 @@ model User {
   earnings       Earning[]
   withdrawals    Withdrawal[]
   adminLogs      AdminLog[] @relation("AdminLogs")
+  notifications Notification[]
+  transaction Transaction[] 
 
   // Referring user relation (optional)
   referrer       User?      @relation("UserReferrer", fields: [referredBy], references: [referralCode])
   referredUsers  User[]     @relation("UserReferrer")
+
 }
 
 model Referral {
@@ -51,6 +54,9 @@ model Referral {
 
   referrer      User     @relation("ReferralsMade", fields: [referrerId], references: [id])
   referee       User     @relation("ReferralsReceived", fields: [refereeId], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Earning {
@@ -60,9 +66,11 @@ model Earning {
   amount      Decimal  @db.Decimal(10, 2)
   type        EarningType
   status      EarningStatus @default(pending)
-  createdAt   DateTime @default(now())
 
   user        User     @relation(fields: [userId], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model Withdrawal {
@@ -76,6 +84,9 @@ model Withdrawal {
   processedAt  DateTime?
 
   user         User     @relation(fields: [userId], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model CommissionSetting {
@@ -84,7 +95,9 @@ model CommissionSetting {
   amount     Decimal  @db.Decimal(10, 2)
   isPercent  Boolean
   active     Boolean  @default(true)
-  createdAt  DateTime @default(now())
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
 }
 
 model AdminLog {
@@ -92,9 +105,40 @@ model AdminLog {
   adminId    String
   action     String
   metadata   Json?
-  createdAt  DateTime @default(now())
 
   admin      User     @relation("AdminLogs", fields: [adminId], references: [id])
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+model Notification {
+  id        String    @id @default(uuid())
+  userId    String
+  title     String
+  body      String    @db.Text
+  read      Boolean   @default(false)
+  createdAt DateTime  @default(now())
+  isDeleted Boolean?
+  deletedAt DateTime?
+  user      User      @relation(fields: [userId], references: [id])
+}
+
+model Transaction {
+  id                String            @id @default(uuid())
+  userId            String?
+  amount            Decimal
+  type              TransactionType
+  status            TransactionStatus
+  reference         String            @unique
+  metadata          Json?
+  createdAt         DateTime          @default(now())
+  updatedAt         DateTime   @updatedAt
+
+  isDeleted         Boolean?
+  deletedAt         DateTime?
+  narration         String?
+
+  user            User?             @relation( fields: [userId], references: [id], onDelete: Cascade)
 }
 
 // Enums
@@ -119,4 +163,15 @@ enum WithdrawalStatus {
 enum CommissionType {
   signup
   purchase
+}
+
+enum TransactionStatus {
+  pending
+  completed
+  failed
+}
+
+enum TransactionType {
+  deposit
+  withdraw
 }

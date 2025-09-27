@@ -32,6 +32,8 @@ import {
   MessageSquareHeartIcon,
   MoreHorizontalIcon,
   MoreVerticalIcon,
+  MoveDownLeft,
+  MoveUpRight,
   PlusIcon,
   TrendingDown,
   TrendingUp,
@@ -92,6 +94,7 @@ import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar"
 import Link from "next/link"
 // import { useIsMobile } from "@/hooks/useIsMobile"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
+import { Transaction, TransactionType } from "@/lib/generated/prisma"
 
 export const schema = z.object({
   id: z.number(),
@@ -118,7 +121,7 @@ export const schema = z.object({
 
 // Create a separate component for the drag handle
 
-const columns: ColumnDef<z.infer<typeof schema>>[] = [
+const columns: ColumnDef<Transaction>[] = [
 //   {
 //     id: "drag",
 //     header: () => null,
@@ -166,15 +169,15 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
         <div className='flex items-center gap-2'>
            {row.original.type.toLowerCase() === "withdraw" ?
            <div className="flex gap-1 items-center">
-            <div className="border-red-600 border border-solid p-1  rounded-full">
-                <TrendingDown color="red" className="size-4"/>
+            <div className="p-1  rounded-full">
+                <MoveDownLeft color="red" className="size-4"/>
             </div>
             <h4>{row.original.type}</h4>
            </div>
            :
            <div className="flex gap-1 items-center">
-            <div className="border-green-600 border border-solid p-1  rounded-full">
-                <TrendingUp color="green" className="size-4"/>
+            <div className=" p-1  rounded-full">
+                <MoveUpRight color="green" className="size-4"/>
             </div>
             <h4>{row.original.type}</h4>
            </div>
@@ -190,7 +193,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => (
       <div className="w-32 font-lato">
         <span>
-          {row.original.date}
+          {row.original.createdAt.toISOString()}
         </span>
       </div>
     ),
@@ -201,7 +204,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
     cell: ({ row }) => (
       <div className="w-32 font-lato">
         <span>
-          {formatToNaira(row.original.total)}
+          {formatToNaira(row.original.amount)}
         </span>
       </div>
     ),
@@ -267,7 +270,7 @@ const columns: ColumnDef<z.infer<typeof schema>>[] = [
 export default function TransactionTable({
   data: initialData,
 }: {
-  data: z.infer<typeof schema>[]
+  data: Transaction[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})

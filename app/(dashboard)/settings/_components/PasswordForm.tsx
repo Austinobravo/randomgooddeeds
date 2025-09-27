@@ -15,8 +15,11 @@ import {
   FormMessage,
 } from "@/components/ui/form"
 import { Input } from "@/components/ui/input"
+import axios from "axios"
+import { toast } from "sonner"
+import { updatePasswordFormSchema } from "@/lib/formSchema"
 
-const formSchema = z.object({
+const updatePasswordupdatePasswordFormSchema = z.object({
   password: z.string().min(2, {
     message: "Username must be at least 2 characters.",
   }),
@@ -30,8 +33,8 @@ const formSchema = z.object({
 
 export function PasswordForm() {
     // 1. Define your form.
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<z.infer<typeof updatePasswordFormSchema>>({
+    resolver: zodResolver(updatePasswordFormSchema),
     defaultValues: {
       password: "",
       newPassword: "",
@@ -40,10 +43,41 @@ export function PasswordForm() {
   })
  
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    // Do something with the form values.
-    // ✅ This will be type-safe and validated.
-    console.log(values)
+  async function onSubmit(values: z.infer<typeof updatePasswordFormSchema>) {
+      try{
+            const result = await axios.post(`/api/profile/update-password`, values)
+            // console.log("result", result)
+            form.reset()
+            toast.success("Success",{
+                description: result.data.message
+            })
+
+            // router.push(`/dashboard`)
+
+        }catch (error: any) {
+            const errorMessage = error.response.data.message || error.response.data.error || "";
+
+            if (errorMessage === "Network error") {
+            toast.error("Network Error", {
+                description: "Please check your connection and try again.",
+            });
+        
+            } else if (errorMessage === "DATABASE_UNREACHABLE") {
+            toast.error("Server Error", {
+                description: "We couldn't reach the database. Please try again later.",
+            });
+        
+            }else if (errorMessage ) {
+            toast.error("Error", {
+                description: `${errorMessage}`,
+            });
+        
+            } else {
+            toast.error("Unexpected Error", {
+                description: typeof error === "string" ? error : "An unexpected error occurred.",
+            });
+            }
+        }
   }
 
   return (

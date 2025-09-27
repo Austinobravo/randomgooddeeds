@@ -9,13 +9,18 @@ import {
   CardTitle,
 } from "@/components/ui/card"
 import { formatToNaira } from '@/lib/utils'
-import { Button } from '@/components/ui/button'
+
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
-import Link from 'next/link';
+
 import { Separator } from '@/components/ui/separator';
 import TransactionTable from '../_components/TransactionTable';
 import data from "../_components/data.json"
 import WithdrawDialog from '../_components/WithdrawDialog';
+import { getCurrentUser } from '@/lib/getServerSession';
+import prisma from '@/prisma/prisma';
+import NotificationTable from '../notifications/_components/NotificationTable';
+
+
 const recentActivities = [
     {
         title: "You have a new notification",
@@ -30,7 +35,27 @@ const recentActivities = [
         createdAt: "8th March, 2025"
     },
 ]
-const DashboardPage = () => {
+const DashboardPage = async () => {
+     const user = await getCurrentUser()
+    
+        const transactions = await prisma.transaction.findMany({
+            where:{
+                userId: user?.id
+    
+            },
+            orderBy:{
+                createdAt: "desc"
+            }
+        })
+        const notifications = await prisma.notification.findMany({
+            where:{
+                userId: user?.id
+    
+            },
+            orderBy:{
+                createdAt: "desc"
+            }
+        })
   return (
     <section>
         <h2 className='text-2xl font-bold py-4'>Wallet</h2>
@@ -56,21 +81,12 @@ const DashboardPage = () => {
                 <div className='shadow bg-white rounded-2xl p-4'>
                     <h3 className='font-bold text-gray-700 text-xl py-4'>Latest Activities</h3>
                     <Separator />
-                    <ul className=''>
-                        {recentActivities.map((activity, index) => (
-                            <Link href={``} key={index} className=''>
-                                <li className='flex flex-col py-2 hover:bg-gray-100 rounded-lg px-2'>
-                                    <span className='font-semibold font-sm text-amber-500'>{activity.title}</span>
-                                    <span className='text-gray-500 text-xs'>{activity.createdAt}</span>
-                                </li>
-                            </Link>
-                        ))}
-                    </ul>
+                     <NotificationTable notifications={notifications.slice(0,5)} />
 
                 </div>
             </div>
             <div className='lg:w-3/5'>
-            <TransactionTable data={data} />
+            <TransactionTable data={transactions} />
             </div>
 
         </div>
