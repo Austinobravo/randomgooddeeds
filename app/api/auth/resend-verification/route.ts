@@ -9,11 +9,22 @@ export async function POST(req: Request) {
   const { email } = await req.json()
 
   if (!email) {
-    return NextResponse.json({ message: "Email is required" }, { status: 400 })
+    return NextResponse.json({ message: "Email or username is required" }, { status: 400 })
   }
 
-  const user = await prisma.user.findUnique({ where: { email } })
-
+  const user = await prisma.user.findFirst({
+      where:{
+          OR: [
+          {
+              email: email
+          },
+          {
+              username: email
+          }
+          ]
+      },
+      
+  })
   if (!user) {
     return NextResponse.json({ message: "User not found" }, { status: 404 })
   }

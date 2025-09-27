@@ -1,5 +1,6 @@
 import { sendEmail } from "@/emails/mailer";
 import { RegisterFormSchema } from "@/lib/formSchema";
+import { Decimal } from "@/lib/generated/prisma/runtime/library";
 import { BASE_URL, createVerificationToken } from "@/lib/utils";
 import prisma from "@/prisma/prisma";
 import bcrypt from "bcryptjs";
@@ -14,9 +15,11 @@ export async function POST(req:Request) {
       return NextResponse.json({ message: "Invalid data", errors: parsed.error.flatten() }, { status: 400 });
     }
 
-    const { firstName, lastName, password, username, referralCode } = parsed.data;
+    const { firstName, lastName, password, referralCode } = parsed.data;
 
     const email = parsed.data.email.toLowerCase()
+    const username = parsed.data.username.toLowerCase()
+
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where:{
@@ -81,6 +84,15 @@ export async function POST(req:Request) {
       where: { id: user?.id },
       data: { verificationLink: VERIFICATION_LINK }
     });
+
+     await prisma.earning.create({
+        data: {
+          userId: user.id,
+          type: "signup",
+          sourceUser: user.id,
+          amount: new Decimal(5000)
+        }
+      })
 
     await sendEmail({
       to: email,

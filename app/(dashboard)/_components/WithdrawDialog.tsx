@@ -9,6 +9,7 @@ import { AmountForm } from './AmountForm';
 import { OtpForm } from './OtpForm';
 import Image from 'next/image';
 import { formatToNaira } from '@/lib/utils';
+import { Transaction } from '@/lib/generated/prisma';
 
 type bankProps = {
     bankName: string;
@@ -16,16 +17,13 @@ type bankProps = {
     accountNumber: string;
 }
 
-type amountProps = {
-    amount: string;
-}
 type otpProps = { pin: string; }
-const WithdrawDialog = () => {
+const WithdrawDialog = ({earningAmount}: {earningAmount: number | undefined}) => {
   const [step, setStep] = useState(1);
 
   const [bankDetails, setBankDetails] = useState<bankProps | null>(null);
   const [amount, setAmount] = useState<string | null>(null);
-  const [otp, setOtp] = useState<otpProps | null >(null);
+  const [transaction, setTransaction] = useState<Transaction | undefined>(undefined);
 
   return (
     <>
@@ -106,6 +104,7 @@ const WithdrawDialog = () => {
               </div>
             </div>
             <AmountForm
+              earningAmount={earningAmount}
               onSuccess={(value) => {
                 setAmount(value);
                 setStep(5);
@@ -134,8 +133,10 @@ const WithdrawDialog = () => {
     
                 </div>
             <OtpForm
+              bankDetails={bankDetails}
+              amount={amount}
               onSuccess={(value) => {
-                setOtp(value);
+                setTransaction(value);
                 setStep(6);
               }}
             />
@@ -157,8 +158,8 @@ const WithdrawDialog = () => {
           <div className='space-y-10'>
             <div className="flex border-y border-solid justify-between py-4">
               <div>
-                <h3 className="font-semibold">20 June 2020 20:39 UTC +1</h3>
-                <h4 className="text-gray-500 text-sm">Trans ID: 0Xddjdkhd83hhednd</h4>
+                <h3 className="font-semibold">{transaction?.createdAt.toString()}</h3>
+                <h4 className="text-gray-500 text-sm">Trans ID: {transaction?.id}</h4>
               </div>
               <div>
                 <h3 className="font-semibold">{formatToNaira(amount || 0)}</h3>
@@ -187,7 +188,7 @@ const WithdrawDialog = () => {
                 <Button className="bg-violet-500 cursor-pointer text-white"><MessageSquareHeartIcon /> Support</Button>
               </div>
             </div>
-            <Button className="bg-blue-500 cursor-pointer text-white min-h-14 w-full">Print</Button>
+            <Button onClick={() => window.print()} className="bg-blue-500 cursor-pointer text-white min-h-14 w-full">Print</Button>
           </div>
         </DialogContent>
       </Dialog>

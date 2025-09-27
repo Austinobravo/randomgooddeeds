@@ -15,6 +15,10 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
 
+export function generateOtp() {
+  return Math.floor(100000 + Math.random() * 900000).toString()
+}
+
 export const validateForEmptySpaces = (value: string) => {
     return value.trim().length >= 1
 }

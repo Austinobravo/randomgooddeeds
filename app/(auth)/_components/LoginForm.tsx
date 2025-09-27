@@ -29,6 +29,8 @@ import { LoginFormSchema } from "@/lib/formSchema"
 const LoginForm = () => {
     const router = useRouter()
     const [isPasswordShown, setIsPasswordShown] = React.useState<boolean>(false)
+    const [emailNotVerified, setEmailNotVerified] = React.useState<boolean>(false)
+    const [isResending, setIsResending] = React.useState<boolean>(false)
 
     const form = useForm<z.infer<typeof LoginFormSchema>>({
         resolver: zodResolver(LoginFormSchema),
@@ -41,35 +43,57 @@ const LoginForm = () => {
       // 2. Define a submit handler.
       async function onSubmit(values: z.infer<typeof LoginFormSchema>) {
          try{
-      const data = await signIn("credentials", 
-        {
-          email: values.username_or_email.trim(),
-          password: values.password.trim(),
-          redirect: false
-        }
-      )
+              const result = await signIn("credentials", 
+                {
+                  email: values.username_or_email.trim().toLocaleLowerCase(),
+                  password: values.password.trim(),
+                  redirect: false
+                }
+              )
 
-      if (data?.error) return  toast.error("Error", {
-        description: data.error,
-    })
+              if (result?.error) {
+                try {
+                  const parsedError = JSON.parse(result.error);
+                  if (parsedError.code === "EMAIL_NOT_VERIFIED") {
+                    setEmailNotVerified(true);
+                    toast.error("Error", {
+                      description: parsedError.message,
+                  });
+                  }
+                  
+                } catch (err) {
+                  const errorMessage = result?.error || "";
+                  if (errorMessage === "Network error") {
+                    toast.error("Network Error", {
+                      description: "Please check your connection and try again.",
+                    });
+                
+                  } else if (errorMessage === "DATABASE_UNREACHABLE") {
+                    toast.error("Server Error", {
+                      description: "We couldn't reach the database. Please try again later.",
+                    });
+                
+                  }else if (errorMessage ) {
+                    toast.error("Error", {
+                      description: `${errorMessage}`,
+                    });
+                
+                  } else {
+                    toast.error("Unexpected Error", {
+                      description: typeof err === "string" ? err : "An unexpected error occurred.",
+                    });
+                  }
+                }
+                return;
+              }
 
-    if(data?.url){
-        toast.success("Success", {
-          description: "Login successful.",
-      })
+            //   if (values.remember) {
+            //     localStorage.setItem(STORAGE_KEY, values.email.trim());
+            //   } else {
+            //     localStorage.removeItem(STORAGE_KEY);
+            //   }
 
-    //   if (values.remember) {
-    //     localStorage.setItem(STORAGE_KEY, values.email.trim());
-    //   } else {
-    //     localStorage.removeItem(STORAGE_KEY);
-    //   }
-
-      return router.push("/dashboard")
-
-    } 
-
-
-
+              return router.push("/dashboard")
     }catch(error: any){
       toast.error("Error", {
         description: error,
@@ -80,9 +104,52 @@ const LoginForm = () => {
     
       const isSubmitting = form.formState.isSubmitting
     
+  const handleResendLink = async () => {
+    const email = form.getValues("username_or_email").trim().toLowerCase()
+    setIsResending(true)
+    try{
+      const res = await fetch("/api/auth/resend-verification", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email }),
+      })
+    
+      const data = await res.json()
+    
+      if (res.ok) {
+        toast.success("Success", {
+          description: "Verification link sent",
+      });
+  
+      } else {
+        toast.error("Error", {
+          description: data.message || "Failed to send verification link",
+      })
+      }
+
+    }catch(error:any){
+      toast.error("Error", {
+        description: error.message || "Failed to send verification link",
+    })
+    }finally{
+      setIsResending(false)
+    }
+  
+  }
   return (
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
+      {emailNotVerified && (
+        <div className="flex bg-red-100 gap-5  flex-wrap lg:flex-nowrap justify-between items-center px-4 py-2 rounded-lg">
+          <div>
+            <h3 className="text-xl text-red-500">Resend a verification mail</h3>
+            <p className="text-gray-400 text-sm">Please check your spam folder before making a request</p>
+          </div>
+          <Button onClick={handleResendLink} type="button" className="bg-blue-800 w-full lg:w-fit cursor-pointer hover:bg-blue-900 h-14 lg:h-fit text-white transition-all duration-500"disabled={isResending}>{isResending ? <div className="loader mx-auto size-4"/> : "Resend Link"}</Button>
+        </div>
+        
+      )}
+
     <FormField
         control={form.control}
         name={`username_or_email`}

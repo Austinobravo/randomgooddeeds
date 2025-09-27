@@ -20,9 +20,13 @@ import { Input } from '@/components/ui/input'
 import Link from 'next/link'
 import { Button } from '@/components/ui/button'
 import CopyComponent from '@/components/globals/CopyComponent'
+import { getCurrentUser } from '@/lib/getServerSession'
+import { redirect } from 'next/navigation'
 
 type Props = React.PropsWithChildren<{}>
-const DashboardLayout = ({children}: Props) => {
+const DashboardLayout = async ({children}: Props) => {
+  const user = await getCurrentUser()
+  if(!user) redirect(`/login`)
   return (
        <SidebarProvider>
       <DashboardSidebar />

@@ -56,11 +56,24 @@ const DashboardPage = async () => {
                 createdAt: "desc"
             }
         })
+
+        const dbEarnings = await prisma.earning.findFirst({
+            where:{
+                userId: user?.id
+    
+            },
+        })
+
+        const earning = {
+            ...dbEarnings,
+            amount: dbEarnings?.amount.toNumber() || 0
+        }
+
   return (
     <section>
         <h2 className='text-2xl font-bold py-4'>Wallet</h2>
-        <div className='flex gap-7 not-sm:flex-wrap'>
-            <div className='lg:w-2/5 space-y-7'>
+        <div className='flex gap-7 not-lg:flex-wrap'>
+            <div className='lg:w-2/5 w-full space-y-7'>
                 <Card className='bg-blue-500 text-white'>
                     <CardHeader>
                         <CardTitle>Balance</CardTitle>
@@ -69,9 +82,9 @@ const DashboardPage = async () => {
                     </CardHeader>
                     <CardContent>
                         <div className='flex flex-col justify-center-safe items-center gap-2'>
-                            <h3 className='font-bold text-3xl'>{formatToNaira(5000.00)}</h3>
+                            <h3 className='font-bold text-3xl'>{formatToNaira(earning.amount)}</h3>
                             <p className='text-gray-200 text-sm'>Available</p>
-                            <WithdrawDialog />
+                            <WithdrawDialog earningAmount={earning.amount}/>
                         </div>
                     </CardContent>
                     <CardFooter>
@@ -85,7 +98,7 @@ const DashboardPage = async () => {
 
                 </div>
             </div>
-            <div className='lg:w-3/5'>
+            <div className='lg:w-3/5 w-full'>
             <TransactionTable data={transactions} />
             </div>
 

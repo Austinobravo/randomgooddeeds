@@ -37,6 +37,8 @@ model User {
   adminLogs      AdminLog[] @relation("AdminLogs")
   notifications Notification[]
   transaction Transaction[] 
+  deposit        Deposit[] 
+  otp            Otp[]
 
   // Referring user relation (optional)
   referrer       User?      @relation("UserReferrer", fields: [referredBy], references: [referralCode])
@@ -62,8 +64,8 @@ model Referral {
 model Earning {
   id          String   @id @default(uuid())
   userId      String
-  sourceUser  String
-  amount      Decimal  @db.Decimal(10, 2)
+  sourceUser  String?
+  amount      Decimal?  @db.Decimal(10, 2) @default(5000)
   type        EarningType
   status      EarningStatus @default(pending)
 
@@ -73,6 +75,14 @@ model Earning {
   updatedAt      DateTime   @updatedAt
 }
 
+model Otp {
+  id        String   @id @default(uuid())
+  userId    String?
+  user      User?    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  code      String
+  expiresAt DateTime
+  createdAt DateTime @default(now())
+}
 model Withdrawal {
   id           String   @id @default(uuid())
   userId       String
@@ -80,6 +90,21 @@ model Withdrawal {
   method       String
   accountInfo  Json
   status       WithdrawalStatus @default(pending)
+  requestedAt  DateTime @default(now())
+  processedAt  DateTime?
+
+  user         User     @relation(fields: [userId], references: [id])
+
+  createdAt      DateTime   @default(now())
+  updatedAt      DateTime   @updatedAt
+}
+
+
+model Deposit {
+  id           String   @id @default(uuid())
+  userId       String
+  amount       Decimal  @db.Decimal(10, 2)
+  accountInfo  Json?
   requestedAt  DateTime @default(now())
   processedAt  DateTime?
 
