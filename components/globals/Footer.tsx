@@ -93,18 +93,19 @@ const socials = [
 ]
 const Footer = () => {
   return (
-    <footer className='flex gap-4 not-lg:flex-wrap  w-full px-5 py-20'>
-        <div className='lg:w-2/5 space-y-3'>
-            <Link href={`/`} className='text-3xl font-bold'>
+    <footer className='flex gap-4 not-lg:flex-wrap  w-full px-5 pt-20'>
+        <div className='flex justify-between not-lg:flex-wrap space-y-3 gap-2 w-full items-center'>
+            {/* <Link href={`/`} className='text-3xl font-bold'>
              <h2>R<span className='text-blue-500'>G</span>D</h2>
-            </Link>
-        <ul className='flex gap-3  items-center mt-5'>
+            </Link> */}
+        <p className='text-sm text-gray-500'>Copyright &copy; {new Date().getFullYear()} Xnyder. All Rights Reserved</p>
+        <ul className='flex gap-7 items-center'>
             {socials.map((social) => (
             <li key={social.name} className=''>
                 <Tooltip>
                 <TooltipTrigger>
-                    <Link href={social.url} className='hover:bg-gray-50 rounded-2xl p-2'>
-                    <social.icon className='size-6'/>
+                    <Link href={social.url} className=''>
+                    <social.icon className='size-5 hover:bg-gray-50 hover:text-blue-500 transition-all ease-in-out rounded-2xl '/>
                     </Link>
                 </TooltipTrigger>
                 <TooltipContent>
@@ -115,9 +116,8 @@ const Footer = () => {
 
             ))}
         </ul>
-        <p className='text-sm text-gray-500'>Copyright &copy; {new Date().getFullYear()} Xnyder. All Rights Reserved</p>
         </div>
-        <div className='flex justify-between w-full gap-6 not-lg:flex-wrap lg:w-3/5'>
+        {/* <div className='flex justify-between w-full gap-6 not-lg:flex-wrap lg:w-3/5'>
             {contents.map((content) => (
                 <ul key={content.title} className='space-y-5'>
                     <li className='font-semibold '>{content.title}</li>
@@ -130,7 +130,7 @@ const Footer = () => {
                 </ul>
             ))}
 
-        </div>
+        </div> */}
     </footer>
   )
 }

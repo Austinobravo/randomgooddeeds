@@ -72,11 +72,8 @@ export default function MobileNav() {
                Login
               </Button>
             </Link>
-
-            <Link href="/register" onClick={() => setOpen(false)}>
-              <Button className="w-full">
-                Become an Affiliate
-              </Button>
+             <Link href={`/register`} onClick={() => setOpen(false)}>
+                <Button className='cursor-pointer min-h-12 px-4 bg-blue-500 hover:bg-blue-600 transition-all  overflow-hidden  relative  hover:scale-110 duration-700 py-2 text-white space-x-3 w-full items-center flex rounded-full'>Become an Affiliate</Button>
             </Link>
           </div>
         </SheetContent>
