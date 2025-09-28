@@ -66,7 +66,7 @@ const DashboardPage = async () => {
 
         const earning = {
             ...dbEarnings,
-            amount: dbEarnings?.amount.toNumber() || 0
+            amount: dbEarnings?.amount?.toNumber() || 0
         }
 
   return (
