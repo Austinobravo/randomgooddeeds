@@ -7,7 +7,7 @@ import { Button } from '@/components/ui/button'
 const DesktopNav = () => {
     const navLinks = useNavigation()
   return (
-    <div className='flex justify-between gap-2 items-center w-full p-4 shadow b'>
+    <div className='flex justify-between gap-2 items-center w-full p-4 shadow py-7'>
         <Link href={`/`} className='text-3xl font-bold'>
             <h2>R<span className='text-blue-500'>G</span>D</h2>
         </Link>
