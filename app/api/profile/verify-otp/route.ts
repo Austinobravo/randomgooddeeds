@@ -52,7 +52,7 @@ export async function POST(req: Request) {
         
         const amountToPay = new Decimal(amount)
         
-        if(earning.amount.lessThan(amountToPay)){
+        if(earning?.amount?.lessThan(amountToPay)){
             return NextResponse.json({ error: 'Insufficient earnings.' }, { status: 400 });
         }
 
