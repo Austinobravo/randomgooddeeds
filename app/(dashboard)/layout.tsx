@@ -23,7 +23,10 @@ import CopyComponent from '@/components/globals/CopyComponent'
 import { getCurrentUser } from '@/lib/getServerSession'
 import { redirect } from 'next/navigation'
 
+export const dynamic = "force-dynamic"
+
 type Props = React.PropsWithChildren<{}>
+
 const DashboardLayout = async ({children}: Props) => {
   const user = await getCurrentUser()
   if(!user) redirect(`/login`)

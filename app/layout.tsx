@@ -36,7 +36,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${inter.className} ${jost.variable} ${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${inter.className} ${jost.variable} ${geistSans.variable} ${geistMono.variable} max-w-[1800px] mx-auto antialiased`}
       >
          <Toaster
             richColors

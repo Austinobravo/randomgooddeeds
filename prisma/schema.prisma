@@ -18,11 +18,10 @@ model User {
   id             String     @id @default(uuid())
   firstName      String
   lastName       String
-  username       String
+  username       String     @unique
   email          String     @unique
   passwordHash   String
   verificationLink String?
-  referralCode   String     @unique
   referredBy     String?    // stores the referralCode of another user
   isVerified     Boolean    @default(false)
   isAdmin        Boolean    @default(false)
@@ -39,10 +38,6 @@ model User {
   transaction Transaction[] 
   deposit        Deposit[] 
   otp            Otp[]
-
-  // Referring user relation (optional)
-  referrer       User?      @relation("UserReferrer", fields: [referredBy], references: [referralCode])
-  referredUsers  User[]     @relation("UserReferrer")
 
 }
 

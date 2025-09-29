@@ -23,11 +23,11 @@ export async function sendEmail({
   const html = await compileTemplate(template, data);
 
   const transporter = nodemailer.createTransport({
-  host: 'mail.xnyder.com',
+  host: 'mail.grinapay.com',
   port: 587,
   secure: false, 
   auth: {
-    user: 'noreply@xnyder.com',
+    user: 'austine@grinapay.com',
     pass: process.env.EMAIL_PASSWORD,
   },
   tls: {

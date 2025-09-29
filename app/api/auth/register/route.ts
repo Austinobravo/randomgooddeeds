@@ -19,6 +19,7 @@ export async function POST(req:Request) {
 
     const email = parsed.data.email.toLowerCase()
     const username = parsed.data.username.toLowerCase()
+    console.log("parsed data", parsed.data)
 
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
@@ -41,40 +42,52 @@ export async function POST(req:Request) {
     // Hash password
     const hashedPassword = await bcrypt.hash(password, 10);
 
-    // Create user
-    const user = await prisma.user.create({
-      data: {
-        email,
-        firstName,
-        lastName,
-        username,
-        passwordHash: hashedPassword,
-        referralCode: username,
-        referredBy: referralCode || null,
-        isVerified: false,
-        isAdmin: false,
-      },
-      select: {
-        id: true,
-        email: true,
-        firstName: true,
-        // role: true,
-      },
-    });
-
-    if (referralCode) {
-      const referrer = await prisma.user.findUnique({ where: { referralCode } })
-      if (referrer) {
-        await prisma.referral.create({
-          data: {
-            referrerId: referrer.id,
-            refereeId: user.id,
-            clickedAt: null, 
-            registeredAt: new Date(),
-          }
-        })
+    const user = await prisma.$transaction(async (tx) => {
+      // Create user
+      const user = await tx.user.create({
+        data: {
+          email,
+          firstName,
+          lastName,
+          username,
+          passwordHash: hashedPassword,
+          referredBy: referralCode || null,
+          isVerified: false,
+          isAdmin: false,
+        },
+        select: {
+          id: true,
+          email: true,
+          firstName: true,
+          // role: true,
+        },
+      });
+  
+      await tx.earning.create({
+         data: {
+           userId: user.id,
+           type: "signup",
+           sourceUser: user.id,
+           amount: new Decimal(5000)
+         }
+       })
+  
+      if (referralCode) {
+        const referrer = await prisma.user.findUnique({ where: { username: referralCode } })
+        if (referrer) {
+          await tx.referral.create({
+            data: {
+              referrerId: referrer.id,
+              refereeId: user.id,
+              clickedAt: null, 
+              registeredAt: new Date(),
+            }
+          })
+        }
       }
-    }
+
+      return user
+    })
 
     const token = createVerificationToken(email);
     const VERIFICATION_LINK = `${BASE_URL}/verify-email?token=${token}`;
@@ -85,14 +98,6 @@ export async function POST(req:Request) {
       data: { verificationLink: VERIFICATION_LINK }
     });
 
-     await prisma.earning.create({
-        data: {
-          userId: user.id,
-          type: "signup",
-          sourceUser: user.id,
-          amount: new Decimal(5000)
-        }
-      })
 
     await sendEmail({
       to: email,

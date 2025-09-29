@@ -24,6 +24,7 @@ import { toast } from "sonner"
 import axios from "axios"
 import { RegisterFormSchema } from "@/lib/formSchema"
 // import { useAuthStore } from "@/lib/store/useAuthStore"
+ import confetti from "canvas-confetti"
 
 const RegisterForm = () => {
     const router = useRouter()
@@ -47,11 +48,34 @@ const RegisterForm = () => {
       async function onSubmit(values: z.infer<typeof RegisterFormSchema>) {
           try{
             const result = await axios.post(`/api/auth/register`, values)
-            // console.log("result", result)
+            console.log("result", result)
             form.reset()
             toast.success("Success",{
                 description: result.data.message
             })
+                var end = Date.now() + (15 * 1000);
+                var colors = ['#283bad', '#ffffff'];
+
+                (function frame() {
+                confetti({
+                    particleCount: 2,
+                    angle: 60,
+                    spread: 55,
+                    origin: { x: 0 },
+                    colors: colors
+                });
+                confetti({
+                    particleCount: 2,
+                    angle: 120,
+                    spread: 55,
+                    origin: { x: 1 },
+                    colors: colors
+                });
+
+                if (Date.now() < end) {
+                    requestAnimationFrame(frame);
+                }
+                }());
 
             // router.push(`/dashboard`)
 
@@ -152,7 +176,7 @@ const RegisterForm = () => {
 
         </div>
         <div className="flex not-lg:flex-wrap items-start gap-3">
-            <div className="space-y-4">
+            <div className="space-y-4 lg:w-1/2">
                 <FormField
                     control={form.control}
                     name={`password`}
@@ -199,6 +223,7 @@ const RegisterForm = () => {
                     </div>
 
             </div>
+            <div className="lg:w-1/2">
             <FormField
                 control={form.control}
                 name={`confirmPassword`}
@@ -225,6 +250,8 @@ const RegisterForm = () => {
                 </FormItem>
                 )}
                     />
+
+            </div>
         </div>
         <FormField
             control={form.control}

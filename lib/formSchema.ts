@@ -59,7 +59,7 @@ export const RegisterFormSchema = z.object({
       .regex(passwordRegex,{ message: "Password must include uppercase, lowercase, number, and special character"})
       .refine((value) => !value || validateForEmptySpaces(value), { message: "No empty spaces" })
       .refine((value) => !value.match(emojiRegex), { message: "No emoji's alllowed." }),
-}).refine((data) => data.password !== data.confirmPassword, {message: "Password don't match.", path: ["confirmPassword"]});
+}).refine((data) => data.password === data.confirmPassword, {message: "Password don't match.", path: ["confirmPassword"]});
 
 
 export const updateProfileFormSchema = z.object({

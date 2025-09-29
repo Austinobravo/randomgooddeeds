@@ -13,9 +13,9 @@ const RegisterPage = () => {
             <RegisterForm />
 
         </div>
-        <div className='bg-blue-500 lg:w-1/2 not-lg:hidden text-white text-center py-10 space-y-3'>
-            <h3 className='text-2xl font-bold'>Join 1,500+ RGD users today!</h3>
-            <h4 className='max-w-lg mx-auto text-sm font-medium'>RGD allows you to buy and sell any kind of digital product or service anywhere in the world seamlessly.</h4>
+        <div className='lg:w-1/2 not-lg:hidden text-white text-center py-10 space-y-3 bg-cover min-h-full' style={{"backgroundImage": `url(/registration_vector.jpg)`}}>
+            {/* <h3 className='text-2xl font-bold'>Join 1,500+ RGD users today!</h3>
+            <h4 className='max-w-lg mx-auto text-sm font-medium'>RGD allows you to buy and sell any kind of digital product or service anywhere in the world seamlessly.</h4> */}
         </div>
     </section>
   )
