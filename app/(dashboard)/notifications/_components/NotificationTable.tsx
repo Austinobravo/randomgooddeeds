@@ -8,13 +8,15 @@ import { Button } from '@/components/ui/button';
 import axios from 'axios';
 import { toast } from 'sonner';
 import Link from 'next/link';
+import { format } from 'date-fns';
 
 const NotificationTable = ({notifications}: {notifications:Notification[]}) => {
     const [ notification, setNotification] = React.useState<Notification | undefined | null>(undefined)
     const [ isModalOpen, setModalOpen] = React.useState<boolean>(false)
 
     const getNotification = async (id:string) => {
-         try{
+        try{
+             setModalOpen(!isModalOpen)
             const result = await axios(`/api/notification/${id}`)
             setNotification(result.data)
 
@@ -49,7 +51,7 @@ const NotificationTable = ({notifications}: {notifications:Notification[]}) => {
                     <p className='py-10 text-center text-muted-foreground'>No Notifications yet.</p>
                 }
                 {notifications.map((activity, index) => (
-                        <li  key={index} onClick={() => getNotification(activity.id)} className='flex flex-col py-2 hover:bg-gray-100 rounded-lg px-2'>
+                        <li  key={index} onClick={() => getNotification(activity.id)} className='flex flex-col py-2 hover:bg-gray-100 rounded-lg px-2 cursor-pointer'>
                             <span className='font-semibold font-sm text-amber-500'>{activity.title}</span>
                             <span className='text-gray-500 text-xs'>{activity.createdAt.toString()}</span>
                         </li>
@@ -94,7 +96,7 @@ const NotificationTable = ({notifications}: {notifications:Notification[]}) => {
                                 <div className="flex border-y border-solid justify-between py-4">
                                     <div>
 
-                                        <h3 className="font-semibold">{notification.createdAt.toString()}</h3>
+                                        <h3 className="font-semibold">{format(notification.createdAt, "EEEE dd MMMM")}</h3>
                                         {/* <h4 className="text-gray-500 text-sm">Trans ID: 0Xddjdkhd83hhednd</h4> */}
                                     </div>
                                     <div>
@@ -104,7 +106,7 @@ const NotificationTable = ({notifications}: {notifications:Notification[]}) => {
                                 </div>
                                 <div className='space-y-2'>
                                 <h4 className="font-bold text-xl">{notification.title}</h4>
-                                <p className='whitespace-pre-wrap'>{notification.body}</p>
+                                <p className='whitespace-pre-wrap text-sm'>{notification.body}</p>
 
                                 </div>
                                 <div>

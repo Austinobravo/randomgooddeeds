@@ -153,6 +153,8 @@ export function OtpForm({ onSuccess, amount, bankDetails }: otpFormProps) {
     }
   }
 
+  const isSubmitting = form.formState.isSubmitting
+
   return (
     <div>
       <Form {...form}>
@@ -207,8 +209,9 @@ export function OtpForm({ onSuccess, amount, bankDetails }: otpFormProps) {
             <Button
               type="submit"
               className="min-h-14 w-full bg-blue-500 cursor-pointer"
+              disabled={isSubmitting}
             >
-              Continue
+              {isSubmitting ? <div className="loader mx-auto size-4"/> : "Continue"}
             </Button>
           </div>
         </form>

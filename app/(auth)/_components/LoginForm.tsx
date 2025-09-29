@@ -92,7 +92,9 @@ const LoginForm = () => {
             //   } else {
             //     localStorage.removeItem(STORAGE_KEY);
             //   }
-
+               toast.success("Success", {
+                  description: "Login Successful",
+              });
               return router.push("/dashboard")
     }catch(error: any){
       toast.error("Error", {
@@ -140,10 +142,10 @@ const LoginForm = () => {
     <Form {...form}>
     <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
       {emailNotVerified && (
-        <div className="flex bg-red-100 gap-5  flex-wrap lg:flex-nowrap justify-between items-center px-4 py-2 rounded-lg">
+        <div className="flex bg-black/10 gap-5  flex-col px-4 py-2 rounded-lg">
           <div>
-            <h3 className="text-xl text-red-500">Resend a verification mail</h3>
-            <p className="text-gray-400 text-sm">Please check your spam folder before making a request</p>
+            <h3 className=" text-amber-500 font-semibold">Resend a verification mail</h3>
+            <p className="text-gray-400 text-xs">Please check your spam folder before making a request</p>
           </div>
           <Button onClick={handleResendLink} type="button" className="bg-blue-800 w-full lg:w-fit cursor-pointer hover:bg-blue-900 h-14 lg:h-fit text-white transition-all duration-500"disabled={isResending}>{isResending ? <div className="loader mx-auto size-4"/> : "Resend Link"}</Button>
         </div>

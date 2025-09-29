@@ -95,6 +95,7 @@ import Link from "next/link"
 // import { useIsMobile } from "@/hooks/useIsMobile"
 import { Dialog, DialogTrigger, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogClose } from "@/components/ui/dialog";
 import { Transaction, TransactionType } from "@/lib/generated/prisma"
+import { format } from 'date-fns';
 
 export const schema = z.object({
   id: z.number(),
@@ -165,14 +166,14 @@ const columns: ColumnDef<Transaction>[] = [
     accessorKey: "type",
     header: "Type",
     cell: ({ row }) => {
-      return  <div className="w-32 font-lato">
-        <div className='flex items-center gap-2'>
+      return  <div className="">
+        <div className='flex items-center gap-2 capitalize'>
            {row.original.type.toLowerCase() === "withdraw" ?
            <div className="flex gap-1 items-center">
             <div className="p-1  rounded-full">
                 <MoveDownLeft color="red" className="size-4"/>
             </div>
-            <h4>{row.original.type}</h4>
+            <h4 >{row.original.type}</h4>
            </div>
            :
            <div className="flex gap-1 items-center">
@@ -191,9 +192,9 @@ const columns: ColumnDef<Transaction>[] = [
     accessorKey: "date",
     header: "Date",
     cell: ({ row }) => (
-      <div className="w-32 font-lato">
+      <div className="">
         <span>
-          {row.original.createdAt.toISOString()}
+          {format(row.original.createdAt, "dd MMM yyyy (EEEE) h:mm a")}
         </span>
       </div>
     ),
@@ -202,7 +203,7 @@ const columns: ColumnDef<Transaction>[] = [
     accessorKey: "total",
     header: "Amount",
     cell: ({ row }) => (
-      <div className="w-32 font-lato">
+      <div className="">
         <span>
           {formatToNaira(row.original.amount)}
         </span>
@@ -214,7 +215,7 @@ const columns: ColumnDef<Transaction>[] = [
     accessorKey: "status",
     header: "Status",
     cell: ({ row }) => (
-        <div>
+        <div className="capitalize">
             {row.original.status.toLowerCase() === "completed" &&
             <div className="flex gap-1 items-center">
                     <span className="bg-green-500 rounded-full size-2"></span>
@@ -270,7 +271,7 @@ const columns: ColumnDef<Transaction>[] = [
 export default function TransactionTable({
   data: initialData,
 }: {
-  data: Transaction[]
+  data: any[]
 }) {
   const [data, setData] = React.useState(() => initialData)
   const [rowSelection, setRowSelection] = React.useState({})
@@ -382,12 +383,12 @@ export default function TransactionTable({
                                                     <div className='space-y-10'>
                                                        <div className="flex border-y border-solid justify-between py-4">
                                                             <div>
-                                                                <h3 className="font-semibold">20 June 2020 20:39 UTC + 1</h3>
-                                                                <h4 className="text-gray-500 text-sm">Trans ID: 0Xddjdkhd83hhednd</h4>
+                                                                <h3 className="font-semibold">{format(cell.row.original.createdAt, "dd MMMM EEEE")}</h3>
+                                                                <h4 className="text-gray-500 text-sm">Trans ID: {cell.row.original.id}</h4>
                                                             </div>
                                                             <div>
-                                                                <h3 className="font-semibold">{formatToNaira(3000)}</h3>
-                                                                <h4 className="text-sm text-amber-500">Pending</h4>
+                                                                <h3 className="font-semibold">{formatToNaira(cell.row.original.amount)}</h3>
+                                                                <h4 className="text-sm text-amber-500 capitalize">{cell.row.original.status}</h4>
                                                             </div>
                                                        </div>
                                                        <div>
@@ -399,9 +400,9 @@ export default function TransactionTable({
                                                                 <h4 className="text-gray-500 text-sm">Account Number</h4>
                                                             </div>
                                                             <div className="space-y-3">
-                                                                <h3 className="font-semibold">Access Bank</h3>
-                                                                <h4 className="font-semibold">Austine Chukwuebuka Doe</h4>
-                                                                <h4 className="font-semibold">0030493</h4>
+                                                                <h3 className="font-semibold">{cell.row.original.metadata.bankName}</h3>
+                                                                <h4 className="font-semibold">{cell.row.original.metadata.accountName}</h4>
+                                                                <h4 className="font-semibold">{cell.row.original.metadata.accountNumber}</h4>
                                                             </div>
                                                        </div>
                                                        <div className="flex justify-between items-center bg-violet-50 rounded-lg p-4">
@@ -409,11 +410,13 @@ export default function TransactionTable({
                                                             <h3 className="font-bold ">Need Help?</h3>
                                                             <p className="text-gray-700 text-xs">If there is a problem with the transaction, make sure to contact support.</p>
                                                         </div>
+                                                        <Link href={`mailto:info@xnyder.com`}>
                                                         <Button className="bg-violet-500 cursor-pointer text-white"><MessageSquareHeartIcon /> Support</Button>
+                                                        </Link>
                                                        </div>
 
                                                        </div>
-                                                       <Button className="bg-blue-500 cursor-pointer text-white min-h-14 w-full">Print</Button>
+                                                       <Button onClick={() => window.print()} className="bg-blue-500 cursor-pointer text-white min-h-14 w-full">Print</Button>
                                                     </div>
                                                 </DialogContent>
                                                 </Dialog>

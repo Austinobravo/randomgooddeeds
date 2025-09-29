@@ -47,7 +47,7 @@ export function PasswordForm() {
       try{
             const result = await axios.post(`/api/profile/update-password`, values)
             // console.log("result", result)
-            form.reset()
+            // form.reset()
             toast.success("Success",{
                 description: result.data.message
             })
@@ -79,6 +79,9 @@ export function PasswordForm() {
             }
         }
   }
+
+
+  const isSubmitting = form.formState.isSubmitting
 
   return (
     <div className="flex not-sm:flex-wrap gap-4">
@@ -139,7 +142,8 @@ export function PasswordForm() {
         </div>
 
         <div className="ml-auto w-fit">
-            <Button type="submit" className="min-h-14">Save and Continue</Button>
+          <Button type="submit" className="min-h-14"disabled={isSubmitting}>{isSubmitting ? <div className="loader mx-auto size-4"/> : "Save and Continue"}</Button>
+
         </div>
       </form>
     </Form>

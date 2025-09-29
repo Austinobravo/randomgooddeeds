@@ -8,7 +8,7 @@ import { getCurrentUser } from "@/lib/getServerSession"
 const TransactionsPage = async () => {
     const user = await getCurrentUser()
 
-    const transactions = await prisma.transaction.findMany({
+    const dbTransactions = await prisma.transaction.findMany({
         where:{
             userId: user?.id
 
@@ -17,6 +17,8 @@ const TransactionsPage = async () => {
             createdAt: "desc"
         }
     })
+        const transactions = dbTransactions.map((tx) => ({...tx, amount: tx.amount.toNumber()}))
+
     return (
         <div>
             <TransactionTable data={transactions}/>

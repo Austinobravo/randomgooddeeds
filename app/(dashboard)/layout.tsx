@@ -22,6 +22,7 @@ import { Button } from '@/components/ui/button'
 import CopyComponent from '@/components/globals/CopyComponent'
 import { getCurrentUser } from '@/lib/getServerSession'
 import { redirect } from 'next/navigation'
+import prisma from '@/prisma/prisma'
 
 export const dynamic = "force-dynamic"
 
@@ -30,6 +31,16 @@ type Props = React.PropsWithChildren<{}>
 const DashboardLayout = async ({children}: Props) => {
   const user = await getCurrentUser()
   if(!user) redirect(`/login`)
+
+  const notifications = await prisma.notification.findMany({
+    where:{
+      userId: user.id,
+      read: false,
+    },
+    orderBy:{
+      createdAt: "desc"
+    }
+  })
   return (
        <SidebarProvider>
       <DashboardSidebar />
@@ -48,17 +59,17 @@ const DashboardLayout = async ({children}: Props) => {
             <div className='flex items-center gap-5'>
                 <div className="sm:flex hidden gap-2 items-center ">
                     <div className='bg-gray-100 rounded-sm p-2 '>
-                        {"https://randomdeeds.com/austinobravo".slice(0,30)}...
+                        {`https://randomdeeds.com/${user.username}`.slice(0,30)}...
                     </div>
                     <div className='cursor-pointer'>
-                        <CopyComponent data={" https://randomdeeds.com/austinobravo"}/>
+                        <CopyComponent data={`https://randomdeeds.com/${user.username}`}/>
                     </div>
 
                 </div>
                         {/* <Button className={`text-black hover:text-white hidden rounded-full lg:flex items-center bg-transparent border border-solid border-gray-500 cursor-pointer `}><Share2 /> Share</Button> */}
                         {/* <MessageCircle /> */}
                         <Link href={`/notifications`} className='relative'>
-                            <span className='absolute -top-3 -right-2 bg-red-500 text-white text-[12px] rounded-full p-[2px]'>20</span>
+                            <span className='absolute -top-3 -right-2 bg-red-500 text-white text-[12px] rounded-full px-2 py-[2px]'>{notifications.length}</span>
                             <Bell />
 
                         </Link>
@@ -69,10 +80,10 @@ const DashboardLayout = async ({children}: Props) => {
         <div className="bg-gray-50 p-10 h-full">
             <div className="sm:hidden flex gap-5 items-center pb-4">
                     <div className='bg-gray-100 rounded-lg p-2 '>
-                        {"https://randomdeeds.com/austinobravo".slice(0,30)}...
+                        {`https://randomdeeds.com/${user.username}`.slice(0,30)}...
                     </div>
                     <div className='cursor-pointer'>
-                        <CopyComponent data={" https://randomdeeds.com/austinobravo"}/>
+                        <CopyComponent data={`https://randomdeeds.com/${user.username}`}/>
                     </div>
 
                 </div>

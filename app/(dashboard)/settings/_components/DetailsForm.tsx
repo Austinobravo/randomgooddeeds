@@ -20,25 +20,26 @@ import axios from "axios"
 import { updateProfileFormSchema } from "@/lib/formSchema"
 
 
-export function DetailsForm() {
+export function DetailsForm({user}: {user:any}) {
     // 1. Define your form.
   const form = useForm<z.infer<typeof updateProfileFormSchema>>({
     resolver: zodResolver(updateProfileFormSchema),
     defaultValues: {
-      firstName: "",
-      lastName: "",
+      firstName: user.firstName || "",
+      lastName: user.lastName || "",
     },
   })
  
   // 2. Define a submit handler.
    async function onSubmit(values: z.infer<typeof updateProfileFormSchema>) {
         try{
-              const result = await axios.post(`/api/profile/update-password`, values)
+              const result = await axios.patch(`/api/profile/`, values)
               // console.log("result", result)
-              form.reset()
+            //   form.reset()
               toast.success("Success",{
                   description: result.data.message
               })
+              window.location.reload()
   
               // router.push(`/dashboard`)
   
@@ -67,6 +68,8 @@ export function DetailsForm() {
               }
           }
     }
+
+    const isSubmitting = form.formState.isSubmitting
 
   return (
     <div className="flex not-sm:flex-wrap gap-4">
@@ -126,7 +129,7 @@ export function DetailsForm() {
             )}
             /> */}
         <div className="ml-auto w-fit">
-            <Button type="submit" className="min-h-14">Save and Continue</Button>
+            <Button type="submit" className="min-h-14"disabled={isSubmitting}>{isSubmitting ? <div className="loader mx-auto size-4"/> : "Save and Continue"}</Button>
         </div>
       </form>
     </Form>

@@ -4,6 +4,7 @@ import  CredentialsProvider  from "next-auth/providers/credentials";
 import prisma from '@/prisma/prisma'
 import { comparePassword } from "@/lib/utils";
 import { emailRegex, emojiRegex } from "@/lib/formSchema";
+import { JWT } from "next-auth/jwt";
 
 export const options:NextAuthOptions = {
     providers: [
@@ -80,16 +81,28 @@ export const options:NextAuthOptions = {
                     ...session.user,
                     id: token.id as string,
                     email: token.email as string,
+                    username: token.username as string,
+                    firstName: token.firstName as string,
+                    lastName: token.lastName as string,
                     
                 }
             }
         },
-        async jwt ({token, user}) {
+        async jwt ({token, user}): Promise<JWT> {
             if(user){
+                const dbUser = await prisma.user.findUnique({
+                    where: { id: (user as any).id },
+                    
+                });
+
                 return {
                     ...token,
                     id: user?.id,
                     email: (user as any).email,
+                    username: dbUser?.username as string,
+                    firstName: dbUser?.firstName as string,
+                    lastName: dbUser?.lastName as string,
+                    
                 }
             }
             return token

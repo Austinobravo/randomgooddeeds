@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono, Jost, Inter } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "sonner";
+import SessionClientProvider from "@/lib/getClientSession";
 // import '@richaadgigi/stylexui/css/xui.css'; // Core CSS
 
 
@@ -50,7 +51,9 @@ export default function RootLayout({
               },
             }}
           />
-        {children}
+        <SessionClientProvider>
+          {children}
+        </SessionClientProvider>
       </body>
     </html>
   );

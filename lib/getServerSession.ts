@@ -10,6 +10,7 @@ type AppUser = {
   lastName: string;
   phoneNumber?: string;
   isEmailVerified?: boolean;
+  username: string
 };
 
 export const getCurrentUser = async (req?: NextRequest): Promise<AppUser | null> => {

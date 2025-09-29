@@ -43,7 +43,7 @@ const ForgotPasswordForm = () => {
             toast.success("Success", {description: response.data.message})
             form.reset()
             }catch(error: any){
-            console.log("error", error)
+           
             const errorMessage = error.response.data.message || "";
             
                 if (errorMessage === "Network error") {

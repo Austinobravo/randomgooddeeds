@@ -36,7 +36,7 @@ export async function sendEmail({
 });
 
   const mailOptions = {
-    from: '"Xnyder" <noreply@xynder.com>',
+    from: '"Xnyder" <austine@grinapay.com>',
     to,
     subject,
     html,

@@ -19,8 +19,6 @@ export async function POST(req:Request) {
 
     const email = parsed.data.email.toLowerCase()
     const username = parsed.data.username.toLowerCase()
-    console.log("parsed data", parsed.data)
-
     // Check if user already exists
     const existingUser = await prisma.user.findFirst({
       where:{

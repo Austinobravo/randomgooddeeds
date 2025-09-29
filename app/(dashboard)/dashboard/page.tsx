@@ -38,7 +38,7 @@ const recentActivities = [
 const DashboardPage = async () => {
      const user = await getCurrentUser()
     
-        const transactions = await prisma.transaction.findMany({
+        const dbTransactions = await prisma.transaction.findMany({
             where:{
                 userId: user?.id
     
@@ -68,6 +68,8 @@ const DashboardPage = async () => {
             ...dbEarnings,
             amount: dbEarnings?.amount?.toNumber() || 0
         }
+        
+        const transactions = dbTransactions.map((tx) => ({...tx, amount: tx.amount.toNumber()}))
 
   return (
     <section>

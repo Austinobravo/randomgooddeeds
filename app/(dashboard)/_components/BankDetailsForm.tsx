@@ -49,7 +49,6 @@ export function BankDetailsForm({onSuccess}:BankDetailsFormProps) {
     // Do something with the form values.
     // ✅ This will be type-safe and validated.
     onSuccess(values)
-    console.log(values)
   }
 
   return (

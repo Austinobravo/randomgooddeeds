@@ -48,7 +48,6 @@ const RegisterForm = () => {
       async function onSubmit(values: z.infer<typeof RegisterFormSchema>) {
           try{
             const result = await axios.post(`/api/auth/register`, values)
-            console.log("result", result)
             form.reset()
             toast.success("Success",{
                 description: result.data.message

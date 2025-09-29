@@ -108,8 +108,8 @@ export function AmountForm({onSuccess, earningAmount}: amountFormProps) {
 
 
         <div className="w-full">
-            {/* <Button type="submit" className="min-h-14 w-full bg-blue-500 cursor-pointer disabled:cursor-not-allowed" disabled={Number(form.watch("amount")) > Number(earningAmount)}>Continue</Button> */}
-            <Button type="submit" className="min-h-14 w-full bg-blue-500 cursor-pointer disabled:cursor-not-allowed" disabled={isSubmitting}>{isSubmitting ? <div className="loader mx-auto size-4"/> : "Continue"}</Button>
+            <Button type="submit" className="min-h-14 w-full bg-blue-500 cursor-pointer disabled:cursor-not-allowed" disabled={Number(form.watch("amount")) > Number(earningAmount) || isSubmitting}>{isSubmitting ? <div className="loader mx-auto size-4"/> : "Continue"}</Button>
+            {/* <Button type="submit" className="min-h-14 w-full bg-blue-500 cursor-pointer disabled:cursor-not-allowed" disabled={isSubmitting}>{isSubmitting ? <div className="loader mx-auto size-4"/> : "Continue"}</Button> */}
         </div>
       </form>
     </Form>

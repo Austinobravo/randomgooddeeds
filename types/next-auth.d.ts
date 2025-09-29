@@ -19,13 +19,18 @@ declare module "next-auth" {
       firstName: string | null;
       lastName: string | null;
       isAdmin: boolean;
-      
+      username: string
+
     } & DefaultSession["user"];
   }
 
   interface User extends DefaultUser {
     id: string;
     email: string;
+    username: string
+    firstName: string | null;
+    lastName: string | null;
+
   }
 }
 
@@ -36,6 +41,8 @@ declare module "next-auth/jwt" {
     firstName: string | null;
     lastName: string | null;
     isAdmin: boolean;
+    username: string
+
 
   }
 }
