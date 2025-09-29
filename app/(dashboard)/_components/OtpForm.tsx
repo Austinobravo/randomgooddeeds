@@ -24,6 +24,7 @@ import axios from "axios"
 import { toast } from "sonner"
 import { useSession } from "next-auth/react"
 import { Transaction } from "@/lib/generated/prisma"
+import confetti from "canvas-confetti"
 
 const formSchema = z.object({
   pin: z.string().min(6, {
@@ -91,6 +92,11 @@ export function OtpForm({ onSuccess, amount, bankDetails }: otpFormProps) {
     try {
       const result = await axios.post(`/api/profile/verify-otp`, payload)
       onSuccess(result.data)
+      confetti({
+          particleCount: 150,
+          spread: 70,
+          origin: { y: 0.6 }
+      });
     } catch (error: any) {
       const errorMessage =
         error.response?.data?.message || error.response?.data?.error || ""
